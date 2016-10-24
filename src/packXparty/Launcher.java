@@ -65,7 +65,7 @@ public class Launcher {
 		Collections.shuffle(listJeux);
 		
 		// Jouer avec tous les jeux de la liste mélangée.
-		// TODO
+		// TODO : à terminer car non fonctionnel pour l'instant !
 		// la liste de jeux est maintenant chargée, elle est mélangée, donc on va parcourir la liste
 		// afin d'exécuter chaque jeux.
 		int compteurPoints = 0;
