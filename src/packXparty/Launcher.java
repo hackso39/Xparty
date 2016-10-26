@@ -7,12 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import com.sun.javafx.iio.ImageFrame;
 
 import core.components.ImagePanel;
 
@@ -48,29 +43,38 @@ public class Launcher {
 	
 	private static void exercice5() {
 		
-		
+		// Création de la liste de jeux contenant soit des questions/réponses, soit des questions/réponses sur image
 		List<Jeux> listJeux = new ArrayList<Jeux>();
 		
-		// On créé NB_QUESTIONS jeu question classique.
+		// On créé NB_QUESTIONS : jeu question/réponse classique.
 		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
 			listJeux.add(creerJeuQuestion());
 		}
 		
-		// On créé NB_QUESTIONS jeu question image.
+		// On créé NB_QUESTIONS : jeu question/réponse sur image.
 		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
 			listJeux.add(creerJeuQuestionImage());
 		}
 		
-		// Mélange la liste des jeux aléatoirement.
-		Collections.shuffle(listJeux);
+		Collections.shuffle(listJeux);	// Mélange aléatoire de la liste des jeux.
 		
-		// Jouer avec tous les jeux de la liste mélangée.
-		// TODO : à terminer car non fonctionnel pour l'instant !
-		// la liste de jeux est maintenant chargée, elle est mélangée, donc on va parcourir la liste
-		// afin d'exécuter chaque jeux.
 		int compteurPoints = 0;
+		
+		/**
+		 * La liste des questions contient des questions sans images et avec images
+		 * On parcours toute la liste des questions 
+		 * Si une questionImage se présente, il faut afficher une fenêtre pour l'image uniquement dans ce cas.
+		 */
 		for (int i = 0 ; i < listJeux.size() ; i++) {
-			listJeux.get(i);
+			
+			if(listJeux.get(i).getClass().equals(JeuQuestionImage.class)) {
+				JeuQuestionImage JQI = (JeuQuestionImage)listJeux.get(i);
+				JFrame fen = afficherImage(JQI.getCheminImage(), JQI.getNomImage());
+				compteurPoints = afficherQuestion(JQI, compteurPoints);
+				fermerFenetre(fen);
+			} else {
+				compteurPoints = afficherQuestion((JeuQuestion)listJeux.get(i), compteurPoints);
+			}
 		}
 		
 		System.out.println("Nombre de points : " + compteurPoints);
