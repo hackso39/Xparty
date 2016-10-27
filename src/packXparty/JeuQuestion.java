@@ -8,8 +8,15 @@ public class JeuQuestion implements Jeux {
 	protected String question = "";
 	protected String reponse = "";
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	public JeuQuestion() {
 		super();
+	}
+	
+	public int jouer(int compteurPoints) {
+		return Launcher.afficherQuestion(this, compteurPoints);
 	}
 	
 	public String getQuestion() {

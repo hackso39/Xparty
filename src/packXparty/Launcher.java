@@ -67,14 +67,16 @@ public class Launcher {
 		 */
 		for (int i = 0 ; i < listJeux.size() ; i++) {
 			
-			if(listJeux.get(i).getClass().equals(JeuQuestionImage.class)) {
-				JeuQuestionImage JQI = (JeuQuestionImage)listJeux.get(i);
-				JFrame fen = afficherImage(JQI.getCheminImage(), JQI.getNomImage());
-				compteurPoints = afficherQuestion(JQI, compteurPoints);
-				fermerFenetre(fen);
-			} else {
-				compteurPoints = afficherQuestion((JeuQuestion)listJeux.get(i), compteurPoints);
-			}
+			compteurPoints = listJeux.get(i).jouer(compteurPoints);
+			
+//			if(listJeux.get(i).getClass().equals(JeuQuestionImage.class)) {
+//				JeuQuestionImage JQI = (JeuQuestionImage)listJeux.get(i);
+//				JFrame fen = afficherImage(JQI.getCheminImage(), JQI.getNomImage());
+//				compteurPoints = afficherQuestion(JQI, compteurPoints);
+//				fermerFenetre(fen);
+//			} else {
+//				compteurPoints = afficherQuestion((JeuQuestion)listJeux.get(i), compteurPoints);
+//			}
 		}
 		
 		System.out.println("Nombre de points : " + compteurPoints);
@@ -228,7 +230,7 @@ public class Launcher {
 	 * @param nomImage : nom donné à la fenêtre
 	 * @return JFrame : objet contenant la référence de la fenêtre retournée
 	 */
-	private static JFrame afficherImage(String cheminImage, String nomImage) {
+	public static JFrame afficherImage(String cheminImage, String nomImage) {
 		// Création de la fenêtre
 		JFrame fen = new JFrame(nomImage);
 		fen.setSize(640, 480);
