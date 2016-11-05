@@ -13,32 +13,32 @@ import core.components.ImagePanel;
 
 public class Launcher {
 
+	// Nombre de questions à poser par type de jeux
 	public static final int NB_QUESTIONS = 2;
-
+	
 	/**
 	 * Lanceur des jeux :
 	 * - Question / Réponse ==> (exercice1)
 	 * - Question / réponse à propos d'une image ==> (exercice4)
-	 * 
+	 * - Question / Réponse et Question / Réponse sur Image (Exercice5)
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
+		// Images pour le jeu Question/Réponse sur Image
 		// C:\Workspace\Xparty\images\ironCat.jpg
 		// C:\Workspace\Xparty\images\marioCat.jpg
 		// C:\Workspace\Xparty\images\Professortocat_v2.png
 
 		// exercice1();
-		// exercice2();
-		// exercice3();
-		//exercice4();
+		// exercice4();
 		exercice5();
 	}
 
 	/**
-	 * Constituer une liste de jeux contenant 2 JeuQuestion et 2 JeuQuestionImage
+	 * Cette méthode est utilisée
 	 * 
-	 * Proposer les jeux à l'utilisateur dans un ordre aléatoire
+	 * Question / Réponse et Question / Réponse sur Image dans un ordre aléatoire
 	 */
 	
 	private static void exercice5() {
@@ -46,7 +46,7 @@ public class Launcher {
 		// Création de la liste de jeux contenant soit des questions/réponses, soit des questions/réponses sur image
 		List<Jeux> listJeux = new ArrayList<Jeux>();
 		
-		// On créé NB_QUESTIONS : jeu question/réponse classique.
+		// On créé NB_QUESTIONS : jeu question/réponse.
 		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
 			listJeux.add(creerJeuQuestion());
 		}
@@ -56,6 +56,11 @@ public class Launcher {
 			listJeux.add(creerJeuQuestionImage());
 		}
 		
+		// On créé NB_QUESTIONS : jeu fausse Anagramme.
+		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
+			listJeux.add(creerJeuFausseAnagramme());
+		}
+		
 		Collections.shuffle(listJeux);	// Mélange aléatoire de la liste des jeux.
 		
 		int compteurPoints = 0;
@@ -63,20 +68,11 @@ public class Launcher {
 		/**
 		 * La liste des questions contient des questions sans images et avec images
 		 * On parcours toute la liste des questions 
-		 * Si une questionImage se présente, il faut afficher une fenêtre pour l'image uniquement dans ce cas.
+		 * Si une questionImage se présente, il faut afficher une fenêtre pour l'image.
 		 */
 		for (int i = 0 ; i < listJeux.size() ; i++) {
 			
 			compteurPoints = listJeux.get(i).jouer(compteurPoints);
-			
-//			if(listJeux.get(i).getClass().equals(JeuQuestionImage.class)) {
-//				JeuQuestionImage JQI = (JeuQuestionImage)listJeux.get(i);
-//				JFrame fen = afficherImage(JQI.getCheminImage(), JQI.getNomImage());
-//				compteurPoints = afficherQuestion(JQI, compteurPoints);
-//				fermerFenetre(fen);
-//			} else {
-//				compteurPoints = afficherQuestion((JeuQuestion)listJeux.get(i), compteurPoints);
-//			}
 		}
 		
 		System.out.println("Nombre de points : " + compteurPoints);
@@ -113,28 +109,60 @@ public class Launcher {
 	}
 
 	/**
-	 * Cette méthode n'est plus utilisée
+	 * Cette méthode est utilisée
 	 * 
-	 * Saisir la question, saisir la réponse, le chemin de l'image, lancer le
-	 * jeux avec affichage de l'image, puis en console, la question et saisir la
-	 * réponse
+	 * @return jfa : retourne une reférence à l'objet de type JeuFausseAnagramme
 	 */
-	private static void exercice3() {
+	private static JeuFausseAnagramme creerJeuFausseAnagramme() {
+		
+		JeuFausseAnagramme jfa = new JeuFausseAnagramme();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Veuillez saisir le mot qui va être présenté au joueur pour l'anagramme :");
+		jfa.setMotFausseAnagramme(sc.nextLine());
+		
+		return jfa;
+	}	
+	
+	/**
+	 * Cette méthode est utilisée
+	 * 
+	 * Algo :
+	 * ------
+	 * comparer la taille des deux mots qui doit être identique, les deux mots doivent être différents
+	 * 		vérifier que toutes les lettres sont identiques entre les deux mots (2 boucles imbriquées)
+	 * 			A chaque fois qu'une lettre est trouvée dans le mot de l'Anagramme, incrémentation du cptLettresTrouvees
+	 *		vérifier que le nombre de lettres indentiques trouvées correspond à la longueur du mot proposé dans 
+	 *      l'anagramme, dans ce cas : +1 pour le compteur de points.
+	 * 
+	 * @param JeuFausseAnagramme jfa : object contenant le mot de départ saisi pour jouer à l'Anagramme et le mot 
+	 * 								   proposé par le joueur
+	 * @param int compteurPoints : entier contenant le nombre de points du joueur
+	 * @return compteurPoints : compteur de points
+	 */
+	public static int comparerMot(JeuFausseAnagramme jfa, int compteurPoints) {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Veuillez saisir une nouvelle fausse Anagramme à partir de celui proposé : "+ jfa.getMotFausseAnagramme() + " : ");
+		jfa.setMotProposeParJoueur(sc.nextLine());
 
-		JeuQuestion qr = new JeuQuestion();
-		qr = creerJeuQuestion();
-
-		JeuQuestionImage gi = new JeuQuestionImage();
-		gi = creerJeuQuestionImage();
-
-		JFrame fen = afficherImage(gi.getCheminImage(), gi.getNomImage());
-
-		int compteurPoints = 0;
-		compteurPoints = afficherQuestion(qr, compteurPoints);
-		System.out.println("Nombre de points : " + compteurPoints);
-		fermerFenetre(fen);
-	}
-
+		if(jfa.getMotFausseAnagramme().length() == jfa.getMotProposeParJoueur().length() && !jfa.getMotFausseAnagramme().equals(jfa.getMotProposeParJoueur())) {
+			
+			int cptLettresTrouvees = 0;
+			for(int i = 0 ; i < jfa.getMotFausseAnagramme().length() ; i++) {
+				for (int j = 0 ; j < jfa.getMotProposeParJoueur().length() ; j++) {
+					if(jfa.getMotFausseAnagramme().charAt(i) == jfa.getMotProposeParJoueur().charAt(j)){
+						cptLettresTrouvees++;
+					}
+				}
+			}
+			if(cptLettresTrouvees == jfa.getMotFausseAnagramme().length()) {
+				compteurPoints++;
+			}
+		}
+		return compteurPoints;
+	}	
+	
 	/**
 	 * Cette méthode est utilisée
 	 * 
@@ -160,64 +188,6 @@ public class Launcher {
 		jeuQuestionImage.setNomImage(sc.nextLine());
 
 		return jeuQuestionImage;
-	}
-
-	/**
-	 * Cette méthode n'est plus utilisée
-	 * 
-	 * afficher une image dans une fenêtre, poser une question en console,
-	 * lorsque l'utilisateur répond à la question, passer à l'image suivante et
-	 * ainsi de suite...
-	 */
-	private static void exercice2() {
-
-		int compteurPoints = 0;
-
-		JeuQuestion qr = new JeuQuestion();
-		// C:\Workspace\Xparty\images\ironCat.jpg
-		String cheminImage = "C:\\Workspace\\Xparty\\images\\ironCat.jpg";
-		String nomImage = "IronCat";
-
-		JFrame fen = afficherImage(cheminImage, nomImage);
-
-		// questionReponse();
-		qr.setQuestion("A quoi ressemble OctoCat ?");
-		qr.setReponse("IronCat");
-		compteurPoints = afficherQuestion(qr, compteurPoints);
-		fen.dispatchEvent(new WindowEvent(fen, WindowEvent.WINDOW_CLOSING));
-
-		/*------------ 2ème image / question ---------------------*/
-
-		cheminImage = "C:\\Workspace\\Xparty\\images\\marioCat.jpg";
-		nomImage = "MarioCat";
-
-		fen = afficherImage(cheminImage, nomImage);
-		// questionReponse();
-		qr.setQuestion("A quoi ressemble OctoCat ?");
-		qr.setReponse("MarioCat");
-		compteurPoints = afficherQuestion(qr, compteurPoints);
-		fen.dispatchEvent(new WindowEvent(fen, WindowEvent.WINDOW_CLOSING));
-
-		System.out.println("Nombre de points : " + compteurPoints);
-	}
-
-	/**
-	 * Cette méthode n'est pas utilisée
-	 */
-	private static void questionReponse() {
-		int compteurPoints = 0;
-
-		JeuQuestion qr = new JeuQuestion();
-		qr.setReponse("IronCat");
-
-		Scanner sc = new Scanner(System.in);
-		System.out.println("A quoi ressemble OctoCat ?");
-		qr.setQuestion(sc.nextLine());
-
-		if (qr.getQuestion().equals(qr.getReponse())) {
-			compteurPoints++;
-		}
-		System.out.println("Nombre de points : " + compteurPoints);
 	}
 
 	/**
