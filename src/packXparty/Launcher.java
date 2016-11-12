@@ -3,6 +3,7 @@ package packXparty;
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +15,7 @@ import core.components.ImagePanel;
 public class Launcher {
 
 	// Nombre de questions à poser par type de jeux
-	public static final int NB_QUESTIONS = 2;
+	public static final int NB_REPETITIONS = 1;
 	
 	/**
 	 * Lanceur des jeux :
@@ -46,19 +47,24 @@ public class Launcher {
 		// Création de la liste de jeux contenant soit des questions/réponses, soit des questions/réponses sur image
 		List<Jeux> listJeux = new ArrayList<Jeux>();
 		
-		// On créé NB_QUESTIONS : jeu question/réponse.
-		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
-			listJeux.add(creerJeuQuestion());
-		}
+//		// On créé NB_REPETITIONS : jeu question/réponse.
+//		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
+//			listJeux.add(creerJeuQuestion());
+//		}
+//		
+//		// On créé NB_REPETITIONS : jeu question/réponse sur image.
+//		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
+//			listJeux.add(creerJeuQuestionImage());
+//		}
+//		
+//		// On créé NB_REPETITIONS : jeu fausse Anagramme.
+//		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
+//			listJeux.add(creerJeuFausseAnagramme());
+//		}
 		
-		// On créé NB_QUESTIONS : jeu question/réponse sur image.
-		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
-			listJeux.add(creerJeuQuestionImage());
-		}
-		
-		// On créé NB_QUESTIONS : jeu fausse Anagramme.
-		for (int i = 0 ; i < NB_QUESTIONS ; i++) {
-			listJeux.add(creerJeuFausseAnagramme());
+		// On créé NB_REPETITIONS : jeu fausse Anagramme.
+		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
+			listJeux.add(creerJeuTriEntiers());
 		}
 		
 		Collections.shuffle(listJeux);	// Mélange aléatoire de la liste des jeux.
@@ -92,7 +98,7 @@ public class Launcher {
 		List<JeuQuestion> listJQ = new ArrayList<JeuQuestion>();
 		List<JeuQuestionImage> listJQI = new ArrayList<JeuQuestionImage>();
 		
-		for (int i = 0; i < NB_QUESTIONS; i++) {
+		for (int i = 0; i < NB_REPETITIONS; i++) {
 			listJQ.add(creerJeuQuestion());
 			listJQI.add(creerJeuQuestionImage());
 		}
@@ -108,6 +114,68 @@ public class Launcher {
 		System.out.println("Nombre de points : " + compteurPoints);
 	}
 
+
+	/**
+	 * Cette méthode est utilisée
+	 * 
+	 * @return
+	 */
+	private static JeuTriEntiers creerJeuTriEntiers() {
+		
+		Integer nb_entiers = 0;
+		JeuTriEntiers jte = new JeuTriEntiers();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Veuillez entrer le nombre d'entiers que vous allez saisir : ");
+		nb_entiers = sc.nextInt();
+		
+		for(int i = 0 ; i < nb_entiers ; i++) {
+			int a = i + 1;
+			System.out.println("Veuillez saisir le nombre entier n° " + a + "/"+ nb_entiers + " : ");
+			jte.addEntierDansListe(sc.nextInt());
+		}
+		
+		
+		return jte;
+	}
+	
+	
+	public static int comparerEntiersTries(JeuTriEntiers jte, int compteurPoints) {
+		
+//		Collections.sort(jte);
+		List<Integer> listTrie = new ArrayList<Integer>();
+		
+		//JeuTriEntiers jteNonTrie = jte;
+		
+		Collections.shuffle(jte.getListEntiers());
+		
+		System.out.println("Voici la liste des nombres entiers à saisir par ordre croissant : ");
+		for(int i = 0 ; i < jte.getListEntiers().size() ; i++) {
+			System.out.print(" " + jte.getListEntiers().get(i));
+		}
+		System.out.println("");
+		
+		Scanner sc = new Scanner(System.in);
+		
+		for(int i = 0 ; i < jte.getListEntiers().size() ; i++) {
+			int a = i + 1;
+			System.out.println("Veuillez saisir le nombre n° " + a + " / " + jte.getListEntiers().size() + " : ");
+			listTrie.add(sc.nextInt());
+		}
+		
+		Collections.sort(jte.getListEntiers());
+
+		int i = 0;
+		while(i < jte.getListEntiers().size() && jte.getListEntiers().get(i).equals(listTrie.get(i))) {
+			if(i == jte.getListEntiers().size()-1) {
+				compteurPoints++;
+			}
+			i++;
+		}
+		
+		return compteurPoints;
+	}
+	
 	/**
 	 * Cette méthode est utilisée
 	 * 
@@ -239,7 +307,7 @@ public class Launcher {
 
 		List<JeuQuestion> listJQ = new ArrayList<JeuQuestion>();
 
-		for (int i = 0; i < NB_QUESTIONS; i++) {
+		for (int i = 0; i < NB_REPETITIONS; i++) {
 			qr = creerJeuQuestion();
 			listJQ.add(qr);
 		}
