@@ -2,6 +2,11 @@ package packXparty;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,10 +67,14 @@ public class Launcher {
 //			listJeux.add(creerJeuFausseAnagramme());
 //		}
 		
-		// On créé NB_REPETITIONS : jeu fausse Anagramme.
-		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
-			listJeux.add(creerJeuTriEntiers());
-		}
+		// On créé autant de jeu tri entiers que de lignes présentent dans le fichier.
+		List<JeuTriEntiers> listeJeuxTriEntiersFichier = creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data.txt");
+		listJeux.addAll(listeJeuxTriEntiersFichier);
+		
+//		// On créé NB_REPETITIONS : jeu fausse Anagramme.
+//		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
+//			listJeux.add(creerJeuTriEntiers());
+//		}
 		
 		Collections.shuffle(listJeux);	// Mélange aléatoire de la liste des jeux.
 		
@@ -116,11 +125,11 @@ public class Launcher {
 
 
 	/**
-	 * Cette méthode est utilisée
+	 * Cette méthode créée un objet JeuTriEntiers depuis la console en demande à l'utilisateur les nombres qu'il veut utiliser.
 	 * 
-	 * @return
+	 * @return Le jeu créé par l'utilisateur.
 	 */
-	private static JeuTriEntiers creerJeuTriEntiers() {
+	public static JeuTriEntiers creerJeuTriEntiers() {
 		
 		Integer nb_entiers = 0;
 		JeuTriEntiers jte = new JeuTriEntiers();
@@ -135,11 +144,79 @@ public class Launcher {
 			jte.addEntierDansListe(sc.nextInt());
 		}
 		
-		
 		return jte;
 	}
 	
+	/**
+	 * Cette méthode créée une liste de JeuTriEntiers depuis un fichier dont le chemin est passé en paramètre. <br>
+	 * Chaque ligne du fichier correspond à une ligne de jeu.
+	 * @param cheminFichier Chemin du fichier.
+	 * @return Jeu créé à partir du fichier.
+	 */
+	public static List<JeuTriEntiers> creerJeuTriEntiersDepuisFichier(String cheminFichier) {
+		
+		
+		List<JeuTriEntiers> listeJeux = new ArrayList<JeuTriEntiers>();
+				
+		try
+		{
+		    File f = new File (cheminFichier);
+		    FileReader fr = new FileReader (f);
+		    BufferedReader br = new BufferedReader (fr);
+		 
+		    try
+		    {
+		        String line = br.readLine();
+		        
+		        // On boucle sur chaque ligne du fichier.
+		        while (line != null)
+		        {
+	            
+		            JeuTriEntiers jte = creerJeuTriEntierDepuisLigne(line);
+		            listeJeux.add(jte);
+		            
+		            line = br.readLine();
+		        }
+		        
+		        br.close();
+		        fr.close();
+		    }
+		    catch (IOException exception)
+		    {
+		        System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
+		    }
+		}
+		catch (FileNotFoundException exception)
+		{
+		    System.out.println ("Le fichier n'a pas été trouvé");
+		}
+		
+		return listeJeux;
+		
+	}
 	
+	
+	/**
+	 * Méthode chargée de créer un JeuTriEntiers depuis une ligne d'un fichier. <br>
+	 * La ligne correspond à une liste de nombres séparés par des ';'.
+	 * 
+	 * @param line Ligne à traiter.
+	 * @return Jeu créé à partir de la ligne.d
+	 */
+	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) {
+		
+		JeuTriEntiers jte = new JeuTriEntiers();
+    	System.out.println("La ligne contient : " + line);
+        String str[] = line.split(";");
+        
+        // On traite la ligne.
+        for (int i = 0 ; i < str.length ; i++) {
+        	jte.addEntierDansListe(Integer.valueOf(str[i]));
+        }
+        
+        return jte;
+	}
+
 	public static int comparerEntiersTries(JeuTriEntiers jte, int compteurPoints) {
 		
 //		Collections.sort(jte);
@@ -175,6 +252,15 @@ public class Launcher {
 		
 		return compteurPoints;
 	}
+
+	/**
+	 * Méthode qui prend en paramètre une ligne du fichier et qui retourne 1 jeu
+	 */
+	
+	/**
+	 * Méthode qui prend en paramètre un fichier texte et qui retourne une liste de jeux
+	 */
+	
 	
 	/**
 	 * Cette méthode est utilisée
