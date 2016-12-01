@@ -1,7 +1,9 @@
-package packXparty;
+package packXparty.jeux;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import packXparty.Launcher;
 
 /**
  * Principe du jeu Tri Entiers :

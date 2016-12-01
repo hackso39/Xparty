@@ -1,4 +1,6 @@
-package packXparty;
+package packXparty.jeux;
+
+import packXparty.Launcher;
 
 /**
  * POJO

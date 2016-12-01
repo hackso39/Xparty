@@ -1,6 +1,8 @@
-package packXparty;
+package packXparty.jeux;
 
-public class JeuQuestion implements Jeux {
+import packXparty.Launcher;
+
+public class JeuQuestionResponse implements Jeux {
 	
 	/**
 	 * Pojo pour les questions/réponses
@@ -11,7 +13,7 @@ public class JeuQuestion implements Jeux {
 	/**
 	 * Constructeur par défaut
 	 */
-	public JeuQuestion() {
+	public JeuQuestionResponse() {
 		super();
 	}
 	

@@ -1,10 +1,12 @@
-package packXparty;
+package packXparty.jeux;
 
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-public class JeuQuestionImage extends JeuQuestion {
+import packXparty.Launcher;
+
+public class JeuQuestionImageReponse extends JeuQuestionResponse {
 	
 	private String cheminImage = "";
 	private String nomImage = "";
@@ -12,7 +14,7 @@ public class JeuQuestionImage extends JeuQuestion {
 	/**
 	 * Constructeur par défaut
 	 */
-	public JeuQuestionImage() {
+	public JeuQuestionImageReponse() {
 		super();
 		
 	}

@@ -16,8 +16,19 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import core.components.ImagePanel;
+import packXparty.jeux.JeuFausseAnagramme;
+import packXparty.jeux.JeuQuestionImageReponse;
+import packXparty.jeux.JeuQuestionResponse;
+import packXparty.jeux.JeuTriEntiers;
+import packXparty.jeux.Jeux;
 
 public class Launcher {
+	
+	// ***
+	// création listes entiers -> le programme ne plante pas si le le fichier contient une lettre 
+	// création de question -> le programme ne plante pas si le fichier ne possède pas de ";" (pas de réponse à la question)
+	// => faire une gestion des exceptions
+	// ***
 
 	// Nombre de questions à poser par type de jeux
 	public static final int NB_REPETITIONS = 1;
@@ -74,10 +85,13 @@ public class Launcher {
 		
 //		List<JeuTriEntiers> listeJeuxTriEntiersFichier = creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt");
 //		listJeux.addAll(listeJeuxTriEntiersFichier);
-		listJeux.addAll(creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
+		listJeux.addAll(CreationJeux.creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
 		
 		// On créé autant de jeu fausse anagramme que de lignes présentent dans le fichier.
-		listJeux.addAll(creerJeuFausseAnagrammeDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_anagramme.txt"));
+		listJeux.addAll(CreationJeux.creerJeuFausseAnagrammeDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_anagramme.txt"));
+		
+		// On créé autant de jeu Question/réponse que de ligne présente dans le fichier. 1 lignee = question;réponse
+		listJeux.addAll(CreationJeux.creerJeuQuestionReponseDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_question.txt"));
 		
 //		// On créé NB_REPETITIONS : jeu fausse Anagramme.
 //		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
@@ -100,7 +114,7 @@ public class Launcher {
 		
 		System.out.println("Nombre de points : " + compteurPoints);
 	}
-
+	
 	/**
 	 * Cette méthode est utilisée
 	 * 
@@ -112,8 +126,8 @@ public class Launcher {
 	 */
 	private static void exercice4() {
 
-		List<JeuQuestion> listJQ = new ArrayList<JeuQuestion>();
-		List<JeuQuestionImage> listJQI = new ArrayList<JeuQuestionImage>();
+		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
+		List<JeuQuestionImageReponse> listJQI = new ArrayList<JeuQuestionImageReponse>();
 		
 		for (int i = 0; i < NB_REPETITIONS; i++) {
 			listJQ.add(creerJeuQuestion());
@@ -132,164 +146,17 @@ public class Launcher {
 	}
 
 
-	public static List<JeuFausseAnagramme> creerJeuFausseAnagrammeDepuisFichier(String cheminFichier) {
-		
-		List<JeuFausseAnagramme> listeJeux = new ArrayList<JeuFausseAnagramme>();
-		
-		try
-		{
-		    File f = new File (cheminFichier);
-		    FileReader fr = new FileReader (f);
-		    BufferedReader br = new BufferedReader (fr);
-		 
-		    try
-		    {
-		        String line = br.readLine();
-		        
-		        // On boucle sur chaque ligne du fichier.
-		        while (line != null)
-		        {
-	            
-		            JeuFausseAnagramme jfa = creerFausseAnagrammeDepuisLigne(line);
-		            listeJeux.add(jfa);
-		            
-		            line = br.readLine();
-		        }
-		        
-		        br.close();
-		        fr.close();
-		    }
-		    catch (IOException exception)
-		    {
-		        System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
-		    }
-		}
-		catch (FileNotFoundException exception)
-		{
-		    System.out.println ("Le fichier n'a pas été trouvé");
-		}
-		
-		return listeJeux;
-	}
-	
-	/**
-	 * Méthode chargée de créer un JeuFausseAnagramme depuis une ligne d'un fichier. <br>
-	 * Il y a un mot par ligne.
-	 * 
-	 * @param line Ligne à traiter.
-	 * @return Jeu créé à partir de la ligne.
-	 */
-	public static JeuFausseAnagramme creerFausseAnagrammeDepuisLigne(String line) {
-		
-		JeuFausseAnagramme jfa = new JeuFausseAnagramme();
-    	System.out.println("La ligne contient : " + line);
-        //String str[] = line.split(";");  // ligne à supprimer normalement
-//        String str = line;
-//    	
-//        // On traite la ligne.
-//        for (int i = 0 ; i < str.length ; i++) {
-//        	//jte.addEntierDansListe(Integer.valueOf(str[i]));
-//        	jfa.addEntierDansListe(Integer.valueOf(str[i]));
-//        }
 
-    	jfa.setMotFausseAnagramme(line);
-    	
-        return jfa;
-	}	
+	
+
 	
 	
-	/**
-	 * Cette méthode créée un objet JeuTriEntiers depuis la console en demande à l'utilisateur les nombres qu'il veut utiliser.
-	 * 
-	 * @return Le jeu créé par l'utilisateur.
-	 */
-	public static JeuTriEntiers creerJeuTriEntiers() {
-		
-		Integer nb_entiers = 0;
-		JeuTriEntiers jte = new JeuTriEntiers();
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Veuillez entrer le nombre d'entiers que vous allez saisir : ");
-		nb_entiers = sc.nextInt();
-		
-		for(int i = 0 ; i < nb_entiers ; i++) {
-			int a = i + 1;
-			System.out.println("Veuillez saisir le nombre entier n° " + a + "/"+ nb_entiers + " : ");
-			jte.addEntierDansListe(sc.nextInt());
-		}
-		
-		return jte;
-	}
+
 	
-	/**
-	 * Cette méthode créée une liste de JeuTriEntiers depuis un fichier dont le chemin est passé en paramètre. <br>
-	 * Chaque ligne du fichier correspond à une ligne de jeu.
-	 * @param cheminFichier Chemin du fichier.
-	 * @return Jeu créé à partir du fichier.
-	 */
-	public static List<JeuTriEntiers> creerJeuTriEntiersDepuisFichier(String cheminFichier) {
-		
-		
-		List<JeuTriEntiers> listeJeux = new ArrayList<JeuTriEntiers>();
-				
-		try
-		{
-		    File f = new File (cheminFichier);
-		    FileReader fr = new FileReader (f);
-		    BufferedReader br = new BufferedReader (fr);
-		 
-		    try
-		    {
-		        String line = br.readLine();
-		        
-		        // On boucle sur chaque ligne du fichier.
-		        while (line != null)
-		        {
-	            
-		            JeuTriEntiers jte = creerJeuTriEntierDepuisLigne(line);
-		            listeJeux.add(jte);
-		            
-		            line = br.readLine();
-		        }
-		        
-		        br.close();
-		        fr.close();
-		    }
-		    catch (IOException exception)
-		    {
-		        System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
-		    }
-		}
-		catch (FileNotFoundException exception)
-		{
-		    System.out.println ("Le fichier n'a pas été trouvé");
-		}
-		
-		return listeJeux;
-		
-	}
+
 	
 	
-	/**
-	 * Méthode chargée de créer un JeuTriEntiers depuis une ligne d'un fichier. <br>
-	 * La ligne correspond à une liste de nombres séparés par des ';'.
-	 * 
-	 * @param line Ligne à traiter.
-	 * @return Jeu créé à partir de la ligne.d
-	 */
-	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) {
-		
-		JeuTriEntiers jte = new JeuTriEntiers();
-    	System.out.println("La ligne contient : " + line);
-        String str[] = line.split(";");
-        
-        // On traite la ligne.
-        for (int i = 0 ; i < str.length ; i++) {
-        	jte.addEntierDansListe(Integer.valueOf(str[i]));
-        }
-        
-        return jte;
-	}
+
 
 	public static int comparerEntiersTries(JeuTriEntiers jte, int compteurPoints) {
 		
@@ -336,21 +203,7 @@ public class Launcher {
 	 */
 	
 	
-	/**
-	 * Cette méthode est utilisée
-	 * 
-	 * @return jfa : retourne une reférence à l'objet de type JeuFausseAnagramme
-	 */
-	private static JeuFausseAnagramme creerJeuFausseAnagramme() {
-		
-		JeuFausseAnagramme jfa = new JeuFausseAnagramme();
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Veuillez saisir le mot qui va être présenté au joueur pour l'anagramme :");
-		jfa.setMotFausseAnagramme(sc.nextLine());
-		
-		return jfa;
-	}	
+
 	
 	/**
 	 * Cette méthode est utilisée
@@ -391,32 +244,7 @@ public class Launcher {
 		return compteurPoints;
 	}	
 	
-	/**
-	 * Cette méthode est utilisée
-	 * 
-	 * @return JeuQuestionImage : retourne la référence de l'objet 
-	 * contenant le chemin et le nom de l'image 
-	 */
-	private static JeuQuestionImage creerJeuQuestionImage() {
 
-		JeuQuestionImage jeuQuestionImage = new JeuQuestionImage();
-		
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("Veuillez saisir une question : ");
-		jeuQuestionImage.setQuestion(sc.nextLine());
-
-		System.out.println("Veuillez saisir la réponse à la question :");
-		jeuQuestionImage.setReponse(sc.nextLine());
-		
-		System.out.println("Veuillez saisir le chemin de l'image à afficher :");
-		jeuQuestionImage.setCheminImage(sc.nextLine());
-		
-		System.out.println("Veuillez saisir le nom de l'image :");
-		jeuQuestionImage.setNomImage(sc.nextLine());
-
-		return jeuQuestionImage;
-	}
 
 	/**
 	 * Cette méthode est utilisée
@@ -463,9 +291,9 @@ public class Launcher {
 	private static void exercice1() {
 		int compteurPoints = 0;
 
-		JeuQuestion qr = null;
+		JeuQuestionResponse qr = null;
 
-		List<JeuQuestion> listJQ = new ArrayList<JeuQuestion>();
+		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
 
 		for (int i = 0; i < NB_REPETITIONS; i++) {
 			qr = creerJeuQuestion();
@@ -479,27 +307,7 @@ public class Launcher {
 		System.out.println("Nombre de points : " + compteurPoints);
 	}
 	
-	/**
-	 * Cette méthode est utilisée
-	 * 
-	 * Cette méthode permet de renseigner les informations en rapport 
-	 * avec la question à poser au joueur pendant la partie
-	 * @return QuestionsReponses : objet contenant le texte de la question, ainsi que la réponse à la question
-	 */
-	private static JeuQuestion creerJeuQuestion() {
 
-		Scanner sc = new Scanner(System.in);
-
-		JeuQuestion qr = new JeuQuestion();
-
-		System.out.println("Veuillez saisir une question : ");
-		qr.setQuestion(sc.nextLine());
-
-		System.out.println("Veuillez saisir la réponse à la question :");
-		qr.setReponse(sc.nextLine());
-
-		return qr;
-	}
 
 	/**
 	 * Cette méthode est utilisée
@@ -508,7 +316,7 @@ public class Launcher {
 	 * @param compteurPoints : contient le nombre de points en cours dans la partie
 	 * @return int : retourne le nombre de points acquis pour la question réponse
 	 */
-	public static int afficherQuestion(JeuQuestion qr, int compteurPoints) {
+	public static int afficherQuestion(JeuQuestionResponse qr, int compteurPoints) {
 
 		Scanner sc = new Scanner(System.in);
 

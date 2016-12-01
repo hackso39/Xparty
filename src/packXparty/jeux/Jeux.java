@@ -1,4 +1,4 @@
-package packXparty;
+package packXparty.jeux;
 
 public interface Jeux {
 	
