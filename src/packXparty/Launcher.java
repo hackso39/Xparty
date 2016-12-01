@@ -39,12 +39,15 @@ public class Launcher {
 		// exercice1();
 		// exercice4();
 		exercice5();
+		
+		System.exit(0);  // évite le plantage en console avec l'erreur : AGENT_ERROR_NO_JNI_ENV(183) 
+		// voir : http://stackoverflow.com/questions/2225737/error-jdwp-unable-to-get-jni-1-2-environment 
 	}
 
 	/**
 	 * Cette méthode est utilisée
 	 * 
-	 * Question / Réponse et Question / Réponse sur Image dans un ordre aléatoire
+	 * Question / Réponse, et Question / Réponse sur Image dans un ordre aléatoire
 	 */
 	
 	private static void exercice5() {
@@ -68,8 +71,13 @@ public class Launcher {
 //		}
 		
 		// On créé autant de jeu tri entiers que de lignes présentent dans le fichier.
-		List<JeuTriEntiers> listeJeuxTriEntiersFichier = creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data.txt");
-		listJeux.addAll(listeJeuxTriEntiersFichier);
+		
+//		List<JeuTriEntiers> listeJeuxTriEntiersFichier = creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt");
+//		listJeux.addAll(listeJeuxTriEntiersFichier);
+		listJeux.addAll(creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
+		
+		// On créé autant de jeu fausse anagramme que de lignes présentent dans le fichier.
+		listJeux.addAll(creerJeuFausseAnagrammeDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_anagramme.txt"));
 		
 //		// On créé NB_REPETITIONS : jeu fausse Anagramme.
 //		for (int i = 0 ; i < NB_REPETITIONS ; i++) {
@@ -124,6 +132,72 @@ public class Launcher {
 	}
 
 
+	public static List<JeuFausseAnagramme> creerJeuFausseAnagrammeDepuisFichier(String cheminFichier) {
+		
+		List<JeuFausseAnagramme> listeJeux = new ArrayList<JeuFausseAnagramme>();
+		
+		try
+		{
+		    File f = new File (cheminFichier);
+		    FileReader fr = new FileReader (f);
+		    BufferedReader br = new BufferedReader (fr);
+		 
+		    try
+		    {
+		        String line = br.readLine();
+		        
+		        // On boucle sur chaque ligne du fichier.
+		        while (line != null)
+		        {
+	            
+		            JeuFausseAnagramme jfa = creerFausseAnagrammeDepuisLigne(line);
+		            listeJeux.add(jfa);
+		            
+		            line = br.readLine();
+		        }
+		        
+		        br.close();
+		        fr.close();
+		    }
+		    catch (IOException exception)
+		    {
+		        System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
+		    }
+		}
+		catch (FileNotFoundException exception)
+		{
+		    System.out.println ("Le fichier n'a pas été trouvé");
+		}
+		
+		return listeJeux;
+	}
+	
+	/**
+	 * Méthode chargée de créer un JeuFausseAnagramme depuis une ligne d'un fichier. <br>
+	 * Il y a un mot par ligne.
+	 * 
+	 * @param line Ligne à traiter.
+	 * @return Jeu créé à partir de la ligne.
+	 */
+	public static JeuFausseAnagramme creerFausseAnagrammeDepuisLigne(String line) {
+		
+		JeuFausseAnagramme jfa = new JeuFausseAnagramme();
+    	System.out.println("La ligne contient : " + line);
+        //String str[] = line.split(";");  // ligne à supprimer normalement
+//        String str = line;
+//    	
+//        // On traite la ligne.
+//        for (int i = 0 ; i < str.length ; i++) {
+//        	//jte.addEntierDansListe(Integer.valueOf(str[i]));
+//        	jfa.addEntierDansListe(Integer.valueOf(str[i]));
+//        }
+
+    	jfa.setMotFausseAnagramme(line);
+    	
+        return jfa;
+	}	
+	
+	
 	/**
 	 * Cette méthode créée un objet JeuTriEntiers depuis la console en demande à l'utilisateur les nombres qu'il veut utiliser.
 	 * 
