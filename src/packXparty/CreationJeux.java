@@ -17,7 +17,6 @@ import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
 
 public abstract class CreationJeux {
-
 	
 	// TODO : factoriser la lecture de fichier dans une classe abstraite tool.
 	// TODO : supporter fichier mal formé avec les exceptions
@@ -31,25 +30,31 @@ public abstract class CreationJeux {
 		
 		String jeux[] = {"anagramme", "question", "triEntiers"};
 		
-		try {
-			File f = new File(cheminFichier);
-			FileReader fr = new FileReader(f);
-			BufferedReader br = new BufferedReader(fr);
-
-			try {
-				String line = br.readLine();
+		List<String> listeLignes = OutilFichiers.lectureLigne(cheminFichier);
 
 				// On boucle sur chaque ligne du fichier.
-				while (line != null) {
+				// trouver le moyen de savoir quand on a lu toute la liste
+				int i = 0;
+				String line = "";
+				//while (line != null) {
+				while (listeLignes.indexOf(i) < listeLignes.size()) {
 
-					System.out.println("La ligne contient : " + line);
+					System.out.println("La ligne contient : " + listeLignes.get(i));
+					line = listeLignes.get(i);
 					String str[] = line.split(";");
 					if(str[0].equals(jeux[0])) {
-						
-						
+
+						List<String> liste = Arrays.asList(str);
+						liste.remove(0);
+						JeuFausseAnagramme jeuFausseAnagramme = creerFausseAnagrammeDepuisListe(liste);
+						listeJeux.add(jeuFausseAnagramme);
 						
 					} else if(str[0].equals(jeux[1])) {
-						
+							
+						List<String> liste = Arrays.asList(str);
+						liste.remove(0);
+						JeuQuestionResponse jeuQuestionResponse = creerJeuQuestionDepuisListe(liste);
+						listeJeux.add(jeuQuestionResponse);
 						
 						
 						} else if(str[0].equals(jeux[2])) {
@@ -61,29 +66,36 @@ public abstract class CreationJeux {
 							
 							} else {
 							System.out.println("Jeu inconnu");
-							
-						
 					}
-					
-					
-					
 					
 					JeuQuestionResponse jqr = creerJeuQuestionResponseDepuisLigne(line);
 					listeJeux.add(jqr);
-
-					line = br.readLine();
+					i++;
 				}
 
-				br.close();
-				fr.close();
-			} catch (IOException exception) {
-				System.out.println("Erreur lors de la lecture : " + exception.getMessage());
-			}
-		} catch (FileNotFoundException exception) {
-			System.out.println("Le fichier n'a pas été trouvé");
-		}
+
 		
 		return listeJeux;
+	}
+
+	private static JeuQuestionResponse creerJeuQuestionDepuisListe(List<String> liste) {
+
+		JeuQuestionResponse jqr = new JeuQuestionResponse();
+		
+		jqr.setQuestion(liste.get(0));
+		jqr.setReponse(liste.get(1));
+		
+		return jqr;
+	}
+
+	private static JeuFausseAnagramme creerFausseAnagrammeDepuisListe(List<String> liste) {
+		
+		JeuFausseAnagramme jfa = new JeuFausseAnagramme(); 
+		
+		// Ex ligne initiale : anagramme;mot // comme anagramme a déjà été retiré, on prend ce qui resten dans la liste
+		jfa.setMotFausseAnagramme(liste.get(0));
+		
+		return jfa;
 	}
 
 	/**

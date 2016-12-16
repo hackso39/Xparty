@@ -93,8 +93,7 @@ public class Launcher {
 		// List<JeuTriEntiers> listeJeuxTriEntiersFichier =
 		// creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt");
 		// listJeux.addAll(listeJeuxTriEntiersFichier);
-		listJeux.addAll(
-				CreationJeux.creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
+		listJeux.addAll(CreationJeux.creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
 
 		// On créé autant de jeu fausse anagramme que de lignes présentent dans
 		// le fichier.
@@ -103,16 +102,14 @@ public class Launcher {
 
 		// On créé autant de jeu Question/réponse que de ligne présente dans le
 		// fichier. 1 lignee = question;réponse
-		listJeux.addAll(CreationJeux
-				.creerJeuQuestionReponseDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_question.txt"));
+		listJeux.addAll(CreationJeux.creerJeuQuestionReponseDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_question.txt"));
 
 		// // On créé NB_REPETITIONS : jeu fausse Anagramme.
 		// for (int i = 0 ; i < NB_REPETITIONS ; i++) {
 		// listJeux.add(creerJeuTriEntiers());
 		// }
 
-		Collections.shuffle(listJeux); // Mélange aléatoire de la liste des
-										// jeux.
+		Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
 
 		int compteurPoints = 0;
 
@@ -314,13 +311,9 @@ public class Launcher {
 	/**
 	 * Cette méthode est utilisée
 	 * 
-	 * @param qr
-	 *            : cet objet contient la question et la réponse à poser au
-	 *            joueur
-	 * @param compteurPoints
-	 *            : contient le nombre de points en cours dans la partie
-	 * @return int : retourne le nombre de points acquis pour la question
-	 *         réponse
+	 * @param qr : cet objet contient la question et la réponse à poser au joueur
+	 * @param compteurPoints : contient le nombre de points en cours dans la partie
+	 * @return int : retourne le nombre de points acquis pour la question réponse
 	 */
 	public static int afficherQuestion(JeuQuestionResponse qr, int compteurPoints) {
 
