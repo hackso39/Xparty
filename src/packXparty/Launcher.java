@@ -198,7 +198,7 @@ public class Launcher {
 			i++;
 		}
 
-		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 		return compteurPoints;
 	}
 
@@ -253,7 +253,7 @@ public class Launcher {
 			}
 		}
 		
-		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 		return compteurPoints;
 	}
 
@@ -338,7 +338,7 @@ public class Launcher {
 			compteurPoints++;
 		}
 		
-		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 		return compteurPoints;
 	}
 

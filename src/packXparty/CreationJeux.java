@@ -365,7 +365,7 @@ public abstract class CreationJeux {
 //			jte.addEntierDansListe(sc.nextInt());
 //		}
 //
-//		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 //		return jte;
 //	}
 
@@ -382,7 +382,7 @@ public abstract class CreationJeux {
 //		System.out.println("Veuillez saisir le mot qui va être présenté au joueur pour l'anagramme :");
 //		jfa.setMotFausseAnagramme(sc.nextLine());
 //
-//		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 //		return jfa;
 //	}
 
@@ -410,7 +410,7 @@ public abstract class CreationJeux {
 		System.out.println("Veuillez saisir le nom de l'image :");
 		jeuQuestionImage.setNomImage(sc.nextLine());
 
-		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 		return jeuQuestionImage;
 	}
 
@@ -435,7 +435,7 @@ public abstract class CreationJeux {
 		System.out.println("Veuillez saisir la réponse à la question :");
 		qr.setReponse(sc.nextLine());
 		
-		sc.close();
+//		sc.close();	// Ne pas mettre cette ligne, sinon : NoSuchElementException
 		
 		return qr;
 	}
