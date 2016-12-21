@@ -18,11 +18,14 @@ import packXparty.jeux.Jeux;
 
 public abstract class CreationJeux {
 
-	// TODO : factoriser la lecture de fichier dans une classe abstraite tool.
 	// TODO : supporter fichier mal formé avec les exceptions
 
 	/**
+	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
+	 * comportant différents types de jeux 
 	 * 
+	 * @param cheminFichier chemin du fichier
+	 * @return List de Jeux retourne une liste de jeux
 	 */
 	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) {
 
@@ -34,17 +37,20 @@ public abstract class CreationJeux {
 
 		List<String> listeLignes = OutilFichiers.lectureLigne(cheminFichier);
 
-		// On boucle sur chaque ligne du fichier.
-		// trouver le moyen de savoir quand on a lu toute la liste
 		int i = 0;
-		String line; // = "";
-		// while (line != null) {
+		String line;
+
+		// On boucle sur chaque ligne du fichier.
 		while (i < listeLignes.size()) {
 
 			System.out.println("La ligne contient : " + listeLignes.get(i));
 			line = listeLignes.get(i);
 			String str[] = line.split(";");
 			
+			/*  Arrays.asList(str) <== Transforme un tableau en liste non dynamique,
+			 *  la liste est donc figée, il faut alors redéclarer une nouvelle ArrayList 
+			 *  sinon il est impossible de faire : liste.remove(0) !!!
+			 */
 			List<String> liste = new ArrayList<String>(Arrays.asList(str));
 			liste.remove(0);
 			System.out.println("La ligne contient maintenant : " + liste);
@@ -66,12 +72,13 @@ public abstract class CreationJeux {
 
 			} else {
 				
-				System.out.println("Jeu inconnu");
+				System.out.println("Jeu inconnu !");
 				
 			}
 
-			JeuQuestionResponse jqr = creerJeuQuestionResponseDepuisLigne(line);
-			listeJeux.add(jqr);
+//			JeuQuestionResponse jqr = creerJeuQuestionResponseDepuisLigne(line);
+//			listeJeux.add(jqr);
+			
 			i++;
 		}
 
@@ -92,8 +99,8 @@ public abstract class CreationJeux {
 
 		JeuFausseAnagramme jfa = new JeuFausseAnagramme();
 
-		// Ex ligne initiale : anagramme;mot // comme anagramme a déjà été
-		// retiré, on prend ce qui resten dans la liste
+		// Ex ligne initiale : anagramme;mot // comme : anagramme a déjà été
+		// retiré, on prend ce qui reste dans la liste
 		jfa.setMotFausseAnagramme(liste.get(0));
 
 		return jfa;
@@ -102,7 +109,6 @@ public abstract class CreationJeux {
 	/**
 	 * Méthode qui prend en paramètre le chemin du fichier contenant les
 	 * questions et les réponses
-	 * 
 	 * 
 	 * @param cheminFichier
 	 * @return une liste de jeux
@@ -226,15 +232,43 @@ public abstract class CreationJeux {
 		return creerJeuTriEntierDepuisListe(liste);
 	}
 
-	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab) {
+	/**
+	 * Cette méthode permet de creer un Jeu TriEntier depuis une Liste de String contenant des nombres
+	 * 
+	 * @param List de String contient les valeurs à convertir en entier (Integer)
+	 * @return JeuTriEntiers qui contient une liste de Integer
+	 */
+	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab)  {
 
 		JeuTriEntiers jte = new JeuTriEntiers();
 
 		// On traite la ligne.
+		boolean err = false;
+		boolean auMoins1err = false;
 		for (int i = 0; i < tab.size(); i++) {
-			jte.addEntierDansListe(Integer.valueOf(tab.get(i)));
-		}
+			err = false;
+			Integer nbr = null;
 
+			try {
+				 nbr = Integer.valueOf(tab.get(i));
+				 //nbr = Integer.parseInt(tab.get(i));
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Fichier mal formé, veuillez corriger le fichier de données : ");
+				System.out.println("le jeu TriEntiers contient des valeurs alphabétiques !");
+				err = true;
+				auMoins1err = err;
+				e.printStackTrace();
+			}
+			if(!err) {
+				jte.addEntierDansListe(nbr);
+			}
+		}
+		
+		if(auMoins1err) {
+			System.out.println("Suite à une erreur dans le fichier de données, la liste contient : " + jte.getListEntiers());
+		}
+		
 		return jte;
 	}
 

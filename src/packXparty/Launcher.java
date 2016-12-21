@@ -109,7 +109,7 @@ public class Launcher {
 		// listJeux.add(creerJeuTriEntiers());
 		// }
 
-		listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
+		listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("D:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
 		
 		Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
 

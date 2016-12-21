@@ -14,7 +14,6 @@ import packXparty.jeux.Jeux;
 
 public class OutilFichiers {
 	
-	
 	/**
 	 * Constructeur par défaut
 	 */
@@ -22,18 +21,12 @@ public class OutilFichiers {
 		super();
 	}
 	
-	// Créer les méthodes :
-	// - à partir d'un chemin de fichier, retourner la ligne lue
-	// - à partir d'un chemin, retourner un tableau au format String de lignes
-	
-	// public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier)
-	
-	// public static List<Jeux> creerJeuQuestionReponseDepuisFichier(String cheminFichier)
-	
-	// public static List<JeuTriEntiers> creerJeuTriEntiersDepuisFichier(String cheminFichier)
-	
-	// public static List<JeuFausseAnagramme> creerJeuFausseAnagrammeDepuisFichier(String cheminFichier)
-	
+	/**
+	 * On charge les infos du fichier et on retourne les lignes dans une liste.
+	 * 
+	 * @param cheminFichier Chemin du fichier
+	 * @return List de String Liste des lignes lues dans le fichier
+	 */
 	public static List<String> lectureLigne(String cheminFichier) {
 		
 		List<String> listeLignes = new ArrayList<String>();

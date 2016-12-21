@@ -1,5 +1,5 @@
 anagramme;manger
-triEntiers;1;2;6;24
+triEntiers;1;2;A;24
 triEntiers;45;55;1;7;5;
 question;Quelle est la couleur du slip de Frédéric ?;Rose
 anagramme;mot
