@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import core.exception.CreationJeuxDepuisFichierException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
@@ -32,7 +33,7 @@ public abstract class CreationJeux {
 	 * @param cheminFichier chemin du fichier
 	 * @return List de Jeux retourne une liste de jeux
 	 */
-	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) {
+	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) throws CreationJeuxDepuisFichierException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 		
@@ -67,12 +68,26 @@ public abstract class CreationJeux {
 
 			} else if (str[0].equals(JEU_TYPE_QUESTION)) {
 
-				JeuQuestionResponse jeuQuestionResponse = creerJeuQuestionDepuisListe(liste);
+				JeuQuestionResponse jeuQuestionResponse; 
+				
+				try {
+					creerJeuQuestionDepuisListe(liste);
+				}
+				catch (CreationJeuxDepuisFichierException e) {
+					throw e;
+				}
+				jeuQuestionResponse = creerJeuQuestionDepuisListe(liste);
 				listeJeux.add(jeuQuestionResponse);
 
 			} else if (str[0].equals(JEU_TYPE_TRIENTIERS)) {
 
-				JeuTriEntiers jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
+				
+				JeuTriEntiers jeuTriEntier;
+				try {
+					jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
+				} catch (CreationJeuxDepuisFichierException e) {
+					throw e;
+				}
 				listeJeux.add(jeuTriEntier);
 
 			} else {
@@ -95,13 +110,17 @@ public abstract class CreationJeux {
 	 * @param liste
 	 * @return
 	 */
-	private static JeuQuestionResponse creerJeuQuestionDepuisListe(List<String> liste) {
+	private static JeuQuestionResponse creerJeuQuestionDepuisListe(List<String> liste) throws CreationJeuxDepuisFichierException {
 
 		JeuQuestionResponse jqr = new JeuQuestionResponse();
 
-		jqr.setQuestion(liste.get(0));
-		jqr.setReponse(liste.get(1));
-
+		try {
+			jqr.setQuestion(liste.get(0));
+			jqr.setReponse(liste.get(1));
+		} 
+		catch (IndexOutOfBoundsException e) {
+			throw new CreationJeuxDepuisFichierException(e);
+		}
 		return jqr;
 	}
 
@@ -235,7 +254,7 @@ public abstract class CreationJeux {
 	 *            Ligne à traiter.
 	 * @return Jeu créé à partir de la ligne.d
 	 */
-	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) {
+	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) throws CreationJeuxDepuisFichierException {
 
 		JeuTriEntiers jte = new JeuTriEntiers();
 		System.out.println("La ligne contient : " + line);
@@ -243,8 +262,15 @@ public abstract class CreationJeux {
 		String str[] = line.split(";");
 
 		List<String> liste = Arrays.asList(str);
+		
+		JeuTriEntiers jeuTriEntier;
+		try {
+			jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
+		} catch (CreationJeuxDepuisFichierException e) {
+			throw new CreationJeuxDepuisFichierException();
+		}
 
-		return creerJeuTriEntierDepuisListe(liste);
+		return jeuTriEntier;
 	}
 
 	/**
@@ -253,35 +279,20 @@ public abstract class CreationJeux {
 	 * @param List de String contient les valeurs à convertir en entier (Integer)
 	 * @return JeuTriEntiers qui contient une liste de Integer
 	 */
-	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab)  {
+	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab) throws CreationJeuxDepuisFichierException  {
 
 		JeuTriEntiers jte = new JeuTriEntiers();
-
+		
 		// On traite la ligne.
-		boolean err = false;
-		boolean auMoins1err = false;
 		for (int i = 0; i < tab.size(); i++) {
-			err = false;
 			Integer nbr = null;
 
 			try {
-				 nbr = Integer.valueOf(tab.get(i));
-				 //nbr = Integer.parseInt(tab.get(i));
-			}
-			catch (NumberFormatException e) {
-				System.out.println("Fichier mal formé, veuillez corriger le fichier de données : ");
-				System.out.println("le jeu TriEntiers contient des valeurs alphabétiques !");
-				err = true;
-				auMoins1err = err;
-				e.printStackTrace();
-			}
-			if(!err) {
+				nbr = Integer.valueOf(tab.get(i));
 				jte.addEntierDansListe(nbr);
+			} catch (NumberFormatException e) {
+				throw new CreationJeuxDepuisFichierException();
 			}
-		}
-		
-		if(auMoins1err) {
-			System.out.println("Suite à une erreur dans le fichier de données, la liste contient : " + jte.getListEntiers());
 		}
 		
 		return jte;

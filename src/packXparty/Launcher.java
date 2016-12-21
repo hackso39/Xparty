@@ -16,6 +16,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import core.components.ImagePanel;
+import core.exception.CreationJeuxDepuisFichierException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
@@ -116,24 +117,31 @@ public class Launcher {
 		// listJeux.add(creerJeuTriEntiers());
 		// }
 
-		listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("D:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
+		try {
+			
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
+			
+			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
+
+			int compteurPoints = 0;
+
+			/**
+			 * La liste des questions contient des questions sans images et avec
+			 * images On parcours toute la liste des questions Si une questionImage
+			 * se présente, il faut afficher une fenêtre pour l'image.
+			 */
+			for (int i = 0; i < listJeux.size(); i++) {
+
+				Jeux monjeu = listJeux.get(i);
+				compteurPoints = monjeu.jouer(compteurPoints);
+			}
+
+			System.out.println("Nombre de points : " + compteurPoints);
+			
+		} catch (CreationJeuxDepuisFichierException e) {
+			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		} 
 		
-		Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
-
-		int compteurPoints = 0;
-
-		/**
-		 * La liste des questions contient des questions sans images et avec
-		 * images On parcours toute la liste des questions Si une questionImage
-		 * se présente, il faut afficher une fenêtre pour l'image.
-		 */
-		for (int i = 0; i < listJeux.size(); i++) {
-
-			Jeux monjeu = listJeux.get(i);
-			compteurPoints = monjeu.jouer(compteurPoints);
-		}
-
-		System.out.println("Nombre de points : " + compteurPoints);
 	}
 
 //	/**
