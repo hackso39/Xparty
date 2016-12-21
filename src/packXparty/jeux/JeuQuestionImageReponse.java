@@ -6,6 +6,11 @@ import javax.swing.JFrame;
 
 import packXparty.Launcher;
 
+/**
+ * 
+ * @author hackso39
+ *
+ */
 public class JeuQuestionImageReponse extends JeuQuestionResponse {
 	
 	private String cheminImage = "";

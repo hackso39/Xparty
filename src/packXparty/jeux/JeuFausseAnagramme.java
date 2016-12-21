@@ -3,7 +3,10 @@ package packXparty.jeux;
 import packXparty.Launcher;
 
 /**
- * POJO <BR/>
+ * 
+ * @author hackso39
+ *
+ * Classe POJO <BR/>
  * Contient les variables d'instance : <BR/>
  * 	- motFausseAnagramme <BR/>
  *  - motProposeParJoueur <BR/>

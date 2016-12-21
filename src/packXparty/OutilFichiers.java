@@ -12,6 +12,13 @@ import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
 
+/**
+ * 
+ * @author hackso39
+ * 
+ * Cette classe permet de réaliser des opérations sur les fichiers.
+ *
+ */
 public class OutilFichiers {
 	
 	/**

@@ -6,14 +6,16 @@ import java.util.List;
 import packXparty.Launcher;
 
 /**
+ * 
+ * @author hackso39
+ *
  * Principe du jeu Tri Entiers :
  * 
  * Demander à l'utilisateur de saisir le nombre d'entiers à trier par ordre croissant
  * puis l'utilisateur saisit les nombres entiers
  * Les nombres mélangés, puis le joueur doit les trier dans l'ordre croissant 
  */
-
-public class JeuTriEntiers implements Jeux{
+public class JeuTriEntiers implements Jeux {
 
 	List<Integer> listEntiers = new ArrayList<Integer>();
 	

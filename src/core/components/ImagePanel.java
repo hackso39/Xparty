@@ -6,6 +6,13 @@ import java.awt.Image;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author hackso39
+ * 
+ * Cette classe permet d'afficher des images pour le Jeu Question Image Reponse
+ *
+ */
 public class ImagePanel extends JPanel {
 
 	private Image image;
@@ -19,5 +26,4 @@ public class ImagePanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 	}
-
 }

@@ -2,6 +2,11 @@ package packXparty.jeux;
 
 import packXparty.Launcher;
 
+/**
+ * 
+ * @author hackso39
+ *
+ */
 public class JeuQuestionResponse implements Jeux {
 	
 	/**

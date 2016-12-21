@@ -22,6 +22,13 @@ import packXparty.jeux.JeuQuestionResponse;
 import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
 
+/**
+ * 
+ * @author hackso39
+ * 
+ * Classe permettant de lancer l'application.
+ *
+ */
 public class Launcher {
 
 	// ***
@@ -129,34 +136,34 @@ public class Launcher {
 		System.out.println("Nombre de points : " + compteurPoints);
 	}
 
-	/**
-	 * Cette méthode est utilisée
-	 * 
-	 * Saisir la question, saisir la réponse, le chemin de l'image. Lancer le
-	 * jeux avec affichage de l'image, puis en console, la question et saisir la
-	 * réponse Cette opérations sera répétée autant de fois qu'indiqué dans la
-	 * variable NB_QUESTIONS.
-	 */
-	private static void exercice4() {
-
-		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
-		List<JeuQuestionImageReponse> listJQI = new ArrayList<JeuQuestionImageReponse>();
-
-		for (int i = 0; i < NB_REPETITIONS; i++) {
-			listJQ.add(CreationJeux.creerJeuQuestion());
-			listJQI.add(CreationJeux.creerJeuQuestionImage());
-		}
-
-		// JFrame fen = afficherImage(gi.getCheminImage(), gi.getNomImage());
-
-		int compteurPoints = 0;
-		for (int i = 0; i < listJQ.size(); i++) {
-			JFrame fen = afficherImage(listJQI.get(i).getCheminImage(), listJQI.get(i).getNomImage());
-			compteurPoints = afficherQuestion(listJQ.get(i), compteurPoints);
-			fermerFenetre(fen);
-		}
-		System.out.println("Nombre de points : " + compteurPoints);
-	}
+//	/**
+//	 * Cette méthode est utilisée
+//	 * 
+//	 * Saisir la question, saisir la réponse, le chemin de l'image. Lancer le
+//	 * jeux avec affichage de l'image, puis en console, la question et saisir la
+//	 * réponse Cette opérations sera répétée autant de fois qu'indiqué dans la
+//	 * variable NB_QUESTIONS.
+//	 */
+//	private static void exercice4() {
+//
+//		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
+//		List<JeuQuestionImageReponse> listJQI = new ArrayList<JeuQuestionImageReponse>();
+//
+//		for (int i = 0; i < NB_REPETITIONS; i++) {
+//			listJQ.add(CreationJeux.creerJeuQuestion());
+//			listJQI.add(CreationJeux.creerJeuQuestionImage());
+//		}
+//
+//		// JFrame fen = afficherImage(gi.getCheminImage(), gi.getNomImage());
+//
+//		int compteurPoints = 0;
+//		for (int i = 0; i < listJQ.size(); i++) {
+//			JFrame fen = afficherImage(listJQI.get(i).getCheminImage(), listJQI.get(i).getNomImage());
+//			compteurPoints = afficherQuestion(listJQ.get(i), compteurPoints);
+//			fermerFenetre(fen);
+//		}
+//		System.out.println("Nombre de points : " + compteurPoints);
+//	}
 
 	public static int comparerEntiersTries(JeuTriEntiers jte, int compteurPoints) {
 
@@ -191,6 +198,7 @@ public class Launcher {
 			i++;
 		}
 
+		sc.close();
 		return compteurPoints;
 	}
 
@@ -244,6 +252,8 @@ public class Launcher {
 				compteurPoints++;
 			}
 		}
+		
+		sc.close();
 		return compteurPoints;
 	}
 
@@ -285,31 +295,31 @@ public class Launcher {
 		fen.dispatchEvent(new WindowEvent(fen, WindowEvent.WINDOW_CLOSING));
 	}
 
-	/**
-	 * Cette méthode est utilisée
-	 * 
-	 * exercice1 : saisir des questions avec les réponses que le joueur devra
-	 * trouver, cette opération se répétera autant de fois que l'indique la
-	 * variable : NB_QUESTIONS.
-	 */
-	private static void exercice1() {
-		int compteurPoints = 0;
-
-		JeuQuestionResponse qr = null;
-
-		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
-
-		for (int i = 0; i < NB_REPETITIONS; i++) {
-			qr = CreationJeux.creerJeuQuestion();
-			listJQ.add(qr);
-		}
-
-		for (int i = 0; i < listJQ.size(); i++) {
-			compteurPoints = afficherQuestion(listJQ.get(i), compteurPoints);
-		}
-
-		System.out.println("Nombre de points : " + compteurPoints);
-	}
+//	/**
+//	 * Cette méthode est utilisée
+//	 * 
+//	 * exercice1 : saisir des questions avec les réponses que le joueur devra
+//	 * trouver, cette opération se répétera autant de fois que l'indique la
+//	 * variable : NB_QUESTIONS.
+//	 */
+//	private static void exercice1() {
+//		int compteurPoints = 0;
+//
+//		JeuQuestionResponse qr = null;
+//
+//		List<JeuQuestionResponse> listJQ = new ArrayList<JeuQuestionResponse>();
+//
+//		for (int i = 0; i < NB_REPETITIONS; i++) {
+//			qr = CreationJeux.creerJeuQuestion();
+//			listJQ.add(qr);
+//		}
+//
+//		for (int i = 0; i < listJQ.size(); i++) {
+//			compteurPoints = afficherQuestion(listJQ.get(i), compteurPoints);
+//		}
+//
+//		System.out.println("Nombre de points : " + compteurPoints);
+//	}
 
 	/**
 	 * Cette méthode est utilisée
@@ -327,6 +337,8 @@ public class Launcher {
 		if (qr.getReponse().equals(repSaisie)) {
 			compteurPoints++;
 		}
+		
+		sc.close();
 		return compteurPoints;
 	}
 
