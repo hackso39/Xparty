@@ -38,19 +38,20 @@ public class OutilFichiers {
 		
 		List<String> listeLignes = new ArrayList<String>();
 		
-		String line = "";
-
 		try {
+			
 			File f = new File(cheminFichier);
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
 
 			try {
-				line = br.readLine();
-
+				
+				String line = br.readLine();
+				
 				// On boucle sur chaque ligne du fichier.
 				while (line != null) {
-					listeLignes.add(br.readLine());
+					listeLignes.add(line);
+					line = br.readLine();
 				}
 				
         		br.close();

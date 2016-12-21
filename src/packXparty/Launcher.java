@@ -93,22 +93,24 @@ public class Launcher {
 		// List<JeuTriEntiers> listeJeuxTriEntiersFichier =
 		// creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt");
 		// listJeux.addAll(listeJeuxTriEntiersFichier);
-		listJeux.addAll(CreationJeux.creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
+//		listJeux.addAll(CreationJeux.creerJeuTriEntiersDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_triEntiers.txt"));
 
 		// On créé autant de jeu fausse anagramme que de lignes présentent dans
 		// le fichier.
-		listJeux.addAll(CreationJeux
-				.creerJeuFausseAnagrammeDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_anagramme.txt"));
+//		listJeux.addAll(CreationJeux
+//				.creerJeuFausseAnagrammeDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_anagramme.txt"));
 
 		// On créé autant de jeu Question/réponse que de ligne présente dans le
 		// fichier. 1 lignee = question;réponse
-		listJeux.addAll(CreationJeux.creerJeuQuestionReponseDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_question.txt"));
+//		listJeux.addAll(CreationJeux.creerJeuQuestionReponseDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_question.txt"));
 
 		// // On créé NB_REPETITIONS : jeu fausse Anagramme.
 		// for (int i = 0 ; i < NB_REPETITIONS ; i++) {
 		// listJeux.add(creerJeuTriEntiers());
 		// }
 
+		listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
+		
 		Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
 
 		int compteurPoints = 0;
@@ -120,7 +122,8 @@ public class Launcher {
 		 */
 		for (int i = 0; i < listJeux.size(); i++) {
 
-			compteurPoints = listJeux.get(i).jouer(compteurPoints);
+			Jeux monjeu = listJeux.get(i);
+			compteurPoints = monjeu.jouer(compteurPoints);
 		}
 
 		System.out.println("Nombre de points : " + compteurPoints);
