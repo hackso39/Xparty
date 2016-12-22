@@ -1,6 +1,6 @@
 anagramme;manger
 triEntiers;1;2;3;24
 triEntiers;45;55;1;7;5;
-question;Quelle est la couleur du slip de Frédéric ?;
+question;Quelle est la couleur du slip de Frédéric ?;Rose
 anagramme;mot
 question;Quelle est la couleur du cheval blanc d'Henri IV ?;Blanc

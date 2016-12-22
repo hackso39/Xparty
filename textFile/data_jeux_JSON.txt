@@ -1,0 +1,8 @@
+{
+ "anagramme":["manger", "mot"],
+ "question":[{"question" : "Quelle est la couleur du slip de Frédéric ?", "réponse": "Rose"}, {"question": "Quelle est la couleur du cheval blanc d'Henri IV ?", "réponse": "Blanc"}],
+ "triEntiers":{
+	"tab1": [1, 2, 3, 24], 
+	"tab2": [45, 55, 1, 7, 5]
+ }
+}

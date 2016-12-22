@@ -17,6 +17,8 @@ import javax.swing.JFrame;
 
 import core.components.ImagePanel;
 import core.exception.CreationJeuxDepuisFichierException;
+import jdk.nashorn.api.scripting.JSObject;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
@@ -31,13 +33,15 @@ import packXparty.jeux.Jeux;
  *
  */
 public class Launcher {
-
+		
 	// ***
-	// création listes entiers -> le programme ne plante pas si le le fichier
+	// création listes entiers -> le programme ne plante pas si le le fichier		FAIT
 	// contient une lettre
 	// création de question -> le programme ne plante pas si le fichier ne
-	// possède pas de ";" (pas de réponse à la question)
-	// => faire une gestion des exceptions
+	// possède pas de ";" (pas de réponse à la question)							FAIT
+	// => faire une gestion des exceptions sur tous les cas possibles
+	// d'erreurs dans la formation du fichier
+	// Transformer le fichier : data_jeux.txt en fichier au format : JSon 
 	// ***
 
 	// Nombre de questions à poser par type de jeux
@@ -52,6 +56,8 @@ public class Launcher {
 	 */
 	public static void main(String[] args) {
 
+		//JSONObject jO = new JSONObject();
+		
 		// Images pour le jeu Question/Réponse sur Image
 		// C:\Workspace\Xparty\images\ironCat.jpg
 		// C:\Workspace\Xparty\images\marioCat.jpg
@@ -73,7 +79,6 @@ public class Launcher {
 	 * Question / Réponse, et Question / Réponse sur Image dans un ordre
 	 * aléatoire
 	 */
-
 	private static void exercice5() {
 
 		// Création de la liste de jeux contenant soit des questions/réponses,
@@ -119,7 +124,7 @@ public class Launcher {
 
 		try {
 			
-			listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("C:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("D:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
 			
 			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
 

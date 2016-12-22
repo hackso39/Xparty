@@ -24,7 +24,7 @@ public class JeuFausseAnagramme implements Jeux {
 		super();
 	}
 
-	@Override
+	//@Override // génère une erreur depuis la conversion du projet en Maven si cette annotation n'est pas commentaire !
 	public int jouer(int compteurPoints) {
 		return Launcher.comparerMot(this, compteurPoints);
 	}
