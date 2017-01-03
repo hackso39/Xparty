@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.json.simple.parser.ParseException;
+
 import core.exception.CreationJeuxDepuisFichierException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
@@ -107,8 +109,9 @@ public abstract class CreationJeux {
 	 * 
 	 * @param cheminFichier chemin du fichier
 	 * @return List<Jeux> retourne une liste de jeux
+	 * @throws ParseException 
 	 */
-	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier) throws CreationJeuxDepuisFichierException {
+	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier) throws CreationJeuxDepuisFichierException, ParseException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 		

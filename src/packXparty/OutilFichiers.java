@@ -12,6 +12,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuTriEntiers;
@@ -81,7 +82,7 @@ public class OutilFichiers {
 	 * @param cheminFichier
 	 * @return
 	 */
-	public static List<String> lectureLigneJson(String cheminFichier) {
+	public static List<String> lectureLigneJson(String cheminFichier) throws ParseException {
 		
 		List<String> listeLignes = new ArrayList<String>();
 		
@@ -99,10 +100,20 @@ public class OutilFichiers {
             if (jsonArray != null) { 
             	   for (int i = 0 ; i < jsonArray.size() ; i++){ 
             		   System.out.println(jsonArray.get(i));
+            		   jsonObject = (JSONObject) jsonArray.get(i);
+            		   
+            		   String type = (String ) jsonObject.get("type");
+            		   System.out.println(type);
+            		   String valeurs = (String ) jsonObject.get("valeurs");
+            		   System.out.println(valeurs);
+            		   
+            		   
             		   listeLignes.add(jsonArray.get(i).toString());
             	   } 
-            	} 
- 
+            } 
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

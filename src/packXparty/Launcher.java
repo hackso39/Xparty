@@ -15,6 +15,8 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+import org.json.simple.parser.ParseException;
+
 import core.components.ImagePanel;
 import core.exception.CreationJeuxDepuisFichierException;
 import jdk.nashorn.api.scripting.JSObject;
@@ -53,8 +55,9 @@ public class Launcher {
 	 * Question / Réponse sur Image (Exercice5)
 	 * 
 	 * @param args
+	 * @throws ParseException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
 		//JSONObject jO = new JSONObject();
 		
@@ -81,8 +84,9 @@ public class Launcher {
 	 * aléatoire
 	 * 
 	 * La création des jeux se fait à partir d'un fichier au format JSON
+	 * @throws ParseException 
 	 */
-	private static void exercice6() {
+	private static void exercice6() throws ParseException {
 
 
 		// Création de la liste de jeux contenant soit des questions/réponses,
