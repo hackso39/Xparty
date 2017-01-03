@@ -6,7 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuTriEntiers;
@@ -66,5 +71,43 @@ public class OutilFichiers {
         }
         		
 		return listeLignes;
+	}
+	
+	/**
+	 * 
+	 *	when syntax is {}then this is JsonObject
+     *	when syntax is [] then this is JsonArray
+	 * 
+	 * @param cheminFichier
+	 * @return
+	 */
+	public static List<String> lectureLigneJson(String cheminFichier) {
+		
+		List<String> listeLignes = new ArrayList<String>();
+		
+        JSONParser parser = new JSONParser();
+        
+        try {
+ 
+            Object obj = parser.parse(new FileReader(cheminFichier));
+            
+            JSONObject jsonObject = (JSONObject) obj;
+
+            JSONArray jsonArray = (JSONArray)jsonObject.get("jeux");
+            
+            // Transformation de la JSONArray en ArrayList afin de la retourner à la fin de la méthode
+            if (jsonArray != null) { 
+            	   for (int i = 0 ; i < jsonArray.size() ; i++){ 
+            		   System.out.println(jsonArray.get(i));
+            		   listeLignes.add(jsonArray.get(i).toString());
+            	   } 
+            	} 
+ 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		//listeLignes = null;
+		return listeLignes ;
 	}
 }

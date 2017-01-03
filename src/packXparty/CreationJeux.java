@@ -18,13 +18,9 @@ import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
 
 /**
- * 
  * @author hackso39
- *
  */
 public abstract class CreationJeux {
-
-	// TODO : supporter fichier mal formé avec les exceptions
 
 	/**
 	 * Cette méthode permet de créé une liste de jeux après 
@@ -105,6 +101,87 @@ public abstract class CreationJeux {
 		return listeJeux;
 	}
 
+	/**
+	 * Cette méthode permet de créé une liste de jeux après 
+	 * avoir lu un fichier au format JSON comportant différents types de jeux 
+	 * 
+	 * @param cheminFichier chemin du fichier
+	 * @return List<Jeux> retourne une liste de jeux
+	 */
+	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier) throws CreationJeuxDepuisFichierException {
+
+		List<Jeux> listeJeux = new ArrayList<Jeux>();
+		
+		final String JEU_TYPE_ANAGRAMME = "anagramme";
+		final String JEU_TYPE_QUESTION = "question";
+		final String JEU_TYPE_TRIENTIERS = "triEntiers";
+
+		List<String> listeLignes = OutilFichiers.lectureLigneJson(cheminFichier);
+
+		int i = 0;
+		String line;
+
+		// On boucle sur chaque ligne du fichier.
+		while (i < listeLignes.size()) {
+
+			System.out.println("La ligne contient : " + listeLignes.get(i));
+			line = listeLignes.get(i);
+			String str[] = line.split(":");
+			
+			/*  
+			 *  Arrays.asList(str) <== Transforme un tableau en liste non dynamique,
+			 *  la liste est donc figée, il faut alors redéclarer une nouvelle ArrayList 
+			 *  sinon il est impossible de faire : liste.remove(0) !!!
+			 */
+			List<String> liste = new ArrayList<String>(Arrays.asList(str));
+			liste.remove(0);
+			System.out.println("La ligne contient maintenant : " + liste);
+			
+			if (str[0].equals(JEU_TYPE_ANAGRAMME)) {
+
+				JeuFausseAnagramme jeuFausseAnagramme = creerFausseAnagrammeDepuisListe(liste);
+				listeJeux.add(jeuFausseAnagramme);
+
+			} else if (str[0].equals(JEU_TYPE_QUESTION)) {
+
+				JeuQuestionResponse jeuQuestionResponse; 
+				
+				try {
+					creerJeuQuestionDepuisListe(liste);
+				}
+				catch (CreationJeuxDepuisFichierException e) {
+					throw e;
+				}
+				jeuQuestionResponse = creerJeuQuestionDepuisListe(liste);
+				listeJeux.add(jeuQuestionResponse);
+
+			} else if (str[0].equals(JEU_TYPE_TRIENTIERS)) {
+
+				
+				JeuTriEntiers jeuTriEntier;
+				try {
+					jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
+				} catch (CreationJeuxDepuisFichierException e) {
+					throw e;
+				}
+				listeJeux.add(jeuTriEntier);
+
+			} else {
+				
+				System.out.println("Jeu inconnu !");
+				
+			}
+
+//			JeuQuestionResponse jqr = creerJeuQuestionResponseDepuisLigne(line);
+//			listeJeux.add(jqr);
+			
+			i++;
+		}
+
+		return listeJeux;
+	}
+	
+	
 	/**
 	 * 
 	 * @param liste

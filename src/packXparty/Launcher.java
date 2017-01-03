@@ -65,12 +65,55 @@ public class Launcher {
 
 		// exercice1();
 		// exercice4();
-		exercice5();
+		//exercice5();
+		exercice6();
 
 		System.exit(0); // évite le plantage en console avec l'erreur :
 						// AGENT_ERROR_NO_JNI_ENV(183)
 		// voir :
 		// http://stackoverflow.com/questions/2225737/error-jdwp-unable-to-get-jni-1-2-environment
+	}
+
+	/**
+	 * Cette méthode est utilisée
+	 * 
+	 * Question / Réponse, et Question / Réponse sur Image dans un ordre
+	 * aléatoire
+	 * 
+	 * La création des jeux se fait à partir d'un fichier au format JSON
+	 */
+	private static void exercice6() {
+
+
+		// Création de la liste de jeux contenant soit des questions/réponses,
+		// soit des questions/réponses sur image
+		List<Jeux> listJeux = new ArrayList<Jeux>();
+
+		try {
+			
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSON("D:\\Workspace\\Xparty\\textFile\\data_jeux.json"));
+			
+			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
+
+			int compteurPoints = 0;
+
+			/**
+			 * La liste des questions contient des questions sans images et avec
+			 * images. On parcours toute la liste des questions. Si une questionImage
+			 * se présente, il faut afficher une fenêtre pour l'image.
+			 */
+			for (int i = 0; i < listJeux.size(); i++) {
+
+				Jeux monjeu = listJeux.get(i);
+				compteurPoints = monjeu.jouer(compteurPoints);
+			}
+
+			System.out.println("Nombre de points : " + compteurPoints);
+			
+		} catch (CreationJeuxDepuisFichierException e) {
+			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		} 
+		
 	}
 
 	/**
@@ -123,7 +166,7 @@ public class Launcher {
 		// }
 
 		try {
-			
+
 			listJeux.addAll(CreationJeux.creerJeuxDepuisFichier("D:\\Workspace\\Xparty\\textFile\\data_jeux.txt"));
 			
 			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des jeux.
