@@ -1,9 +1,7 @@
 package packXparty.jeux;
 
 /**
- * 
  * @author hackso39
- *
  */
 public interface Jeux {
 	

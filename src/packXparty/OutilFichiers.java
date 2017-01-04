@@ -82,35 +82,63 @@ public class OutilFichiers {
 	 * @param cheminFichier
 	 * @return
 	 */
-	public static List<String> lectureLigneJson(String cheminFichier) throws ParseException {
+	//public static List<String> lectureLigneJson(String cheminFichier) throws ParseException {
+	public static JSONObject lectureLigneJson(String cheminFichier) throws ParseException {	
 		
-		List<String> listeLignes = new ArrayList<String>();
+//		List<String> listeLignes = new ArrayList<String>();
 		
         JSONParser parser = new JSONParser();
+        
+        JSONObject jsonObject = new JSONObject();
         
         try {
  
             Object obj = parser.parse(new FileReader(cheminFichier));
             
-            JSONObject jsonObject = (JSONObject) obj;
+            jsonObject = (JSONObject) obj;
 
-            JSONArray jsonArray = (JSONArray)jsonObject.get("jeux");
-            
-            // Transformation de la JSONArray en ArrayList afin de la retourner à la fin de la méthode
-            if (jsonArray != null) { 
-            	   for (int i = 0 ; i < jsonArray.size() ; i++){ 
-            		   System.out.println(jsonArray.get(i));
-            		   jsonObject = (JSONObject) jsonArray.get(i);
+//            JSONArray jsonArray = (JSONArray)jsonObject.get("jeux");
+//            
+//            // Transformation de la JSONArray en ArrayList afin de la retourner à la fin de la méthode
+//            if (jsonArray != null) { 
+//            	   for (int i = 0 ; i < jsonArray.size() ; i++){ 
+//            		   System.out.println(jsonArray.get(i));
+//            		   jsonObject = (JSONObject) jsonArray.get(i);
+//            		   
+//            		   String type = (String ) jsonObject.get("type");
+//            		   System.out.println("Type de jeu : " + type);
+//            		   
+//            		   if(type != null && type.equals(Launcher.JEU_TYPE_ANAGRAMME)) {
+//            			   JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+//            			   String mot = (String) valeurs.get("mot");
+//            			   System.out.println("Valeurs : " + mot);
+//            		   }
+//
+//            		   if(type != null && type.equals(Launcher.JEU_TYPE_QUESTION)) {
+//            			   JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+//            			   String question = (String) valeurs.get("question");
+//            			   System.out.println("Question : " + question);
+//            			   String reponse = (String) valeurs.get("réponse");
+//            			   System.out.println("Réponse : " + reponse);
+//            		   }
+//
+//            		   if(type != null && type.equals(Launcher.JEU_TYPE_TRIENTIERS)) {
+//            			   JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+//            			   JSONArray nombres = (JSONArray) valeurs.get("nombres");
+//            			   System.out.print("Nombres : ");
+//            			   
+//            			   for (int j = 0 ; j < nombres.size() ; j++){
+//            				   System.out.print(nombres.get(j));
+//            				   if (j < nombres.size()-1) {
+//            					   System.out.print(", ");
+//            				   }
+//            			   }
+//            			   System.out.println("");
+//            		   }
             		   
-            		   String type = (String ) jsonObject.get("type");
-            		   System.out.println(type);
-            		   String valeurs = (String ) jsonObject.get("valeurs");
-            		   System.out.println(valeurs);
-            		   
-            		   
-            		   listeLignes.add(jsonArray.get(i).toString());
-            	   } 
-            } 
+//            		   listeLignes.add(jsonArray.get(i).toString());
+//            	   } 
+//            } 
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -119,6 +147,7 @@ public class OutilFichiers {
         }
 		
 		//listeLignes = null;
-		return listeLignes ;
+		//return listeLignes ;
+		return jsonObject;
 	}
 }

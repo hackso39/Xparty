@@ -49,6 +49,11 @@ public class Launcher {
 	// Nombre de questions à poser par type de jeux
 	public static final int NB_REPETITIONS = 1;
 
+	// Constantes pour les différents types de jeux
+	public static final String JEU_TYPE_ANAGRAMME = "anagramme";
+	public static final String JEU_TYPE_QUESTION = "question";
+	public static final String JEU_TYPE_TRIENTIERS = "triEntiers";
+
 	/**
 	 * Lanceur des jeux : - Question / Réponse ==> (exercice1) - Question /
 	 * réponse à propos d'une image ==> (exercice4) - Question / Réponse et
