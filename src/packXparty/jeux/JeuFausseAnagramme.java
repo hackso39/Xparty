@@ -3,33 +3,35 @@ package packXparty.jeux;
 import packXparty.Launcher;
 
 /**
- * 
- * @author hackso39
+ * @author
  *
- * Classe POJO <BR/>
- * Contient les variables d'instance : <BR/>
- * 	- motFausseAnagramme <BR/>
- *  - motProposeParJoueur <BR/>
+ * 		Classe POJO pour la création de jeux Fausse Anagramme.<BR/>
+ *         Contient les variables d'instance : <BR/>
+ *         - motFausseAnagramme <BR/>
+ *         - motProposeParJoueur <BR/>
  */
 public class JeuFausseAnagramme implements Jeux {
 
-	
-	private String motFausseAnagramme = "";		// Mot de départ saisi pour jouer à l'Anagramme (Ex : mot)
-	private String motProposeParJoueur = "";	// Mot proposé par le joueur (Ex : tom)
-	
+	private String motFausseAnagramme = ""; // Mot de départ saisi pour jouer à
+											// l'Anagramme (Ex : mot)
+	private String motProposeParJoueur = ""; // Mot proposé par le joueur (Ex :
+												// tom)
+
 	/**
 	 * Constructeur par défaut
 	 */
-	public JeuFausseAnagramme () {
+	public JeuFausseAnagramme() {
 		super();
 	}
 
-	/*@Override /* génère une erreur depuis la conversion du projet 
-	               en Maven si cette annotation n'est pas commentaire ! */
+	/*
+	 * @Override /* génère une erreur depuis la conversion du projet en Maven si
+	 * cette annotation n'est pas commentaire !
+	 */
 	public int jouer(int compteurPoints) {
 		return Launcher.comparerMot(this, compteurPoints);
 	}
-	
+
 	public String getMotFausseAnagramme() {
 		return motFausseAnagramme;
 	}

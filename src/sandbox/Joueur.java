@@ -1,5 +1,8 @@
 package sandbox;
 
+/**
+ * @author
+ */
 public class Joueur {
 
 	private String nom;

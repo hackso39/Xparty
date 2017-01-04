@@ -17,7 +17,10 @@ import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
 
 /**
- * @author hackso39
+ * @author
+ * 
+ * 		Classe permettant de créer les jeux à partir d'un chemin de fichier
+ *         texte ou JSON.
  */
 public abstract class CreationJeux {
 
@@ -32,10 +35,6 @@ public abstract class CreationJeux {
 	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) throws CreationJeuxDepuisFichierException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
-
-		// final String JEU_TYPE_ANAGRAMME = "anagramme";
-		// final String JEU_TYPE_QUESTION = "question";
-		// final String JEU_TYPE_TRIENTIERS = "triEntiers";
 
 		List<String> listeLignes = OutilFichiers.lectureLigne(cheminFichier);
 
@@ -92,10 +91,6 @@ public abstract class CreationJeux {
 
 			}
 
-			// JeuQuestionResponse jqr =
-			// creerJeuQuestionResponseDepuisLigne(line);
-			// listeJeux.add(jqr);
-
 			i++;
 		}
 
@@ -104,10 +99,10 @@ public abstract class CreationJeux {
 
 	/**
 	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
-	 * au format JSON comportant différents types de jeux
+	 * au format JSON comportant différents types de jeux.
 	 * 
 	 * @param cheminFichier
-	 *            chemin du fichier
+	 *            chemin du fichier au format JSON
 	 * @return List<Jeux> retourne une liste de jeux
 	 * @throws ParseException
 	 */
@@ -130,6 +125,7 @@ public abstract class CreationJeux {
 				System.out.println("Type de jeu : " + type);
 
 				if (type != null && type.equals(Launcher.JEU_TYPE_ANAGRAMME)) {
+
 					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
 					String mot = (String) valeurs.get("mot");
 					System.out.println("Valeurs : " + mot);
@@ -212,48 +208,6 @@ public abstract class CreationJeux {
 		return jfa;
 	}
 
-	// /**
-	// * Méthode qui prend en paramètre le chemin du fichier contenant les
-	// * questions et les réponses
-	// *
-	// * @param cheminFichier
-	// * @return une liste de jeux
-	// */
-	// public static List<Jeux> creerJeuQuestionReponseDepuisFichier(String
-	// cheminFichier) {
-	//
-	// List<Jeux> listeJeux = new ArrayList<Jeux>();
-	//
-	// try {
-	// File f = new File(cheminFichier);
-	// FileReader fr = new FileReader(f);
-	// BufferedReader br = new BufferedReader(fr);
-	//
-	// try {
-	// String line = br.readLine();
-	//
-	// // On boucle sur chaque ligne du fichier.
-	// while (line != null) {
-	//
-	// JeuQuestionResponse jqr = creerJeuQuestionResponseDepuisLigne(line);
-	// listeJeux.add(jqr);
-	//
-	// line = br.readLine();
-	// }
-	//
-	// br.close();
-	// fr.close();
-	// } catch (IOException exception) {
-	// System.out.println("Erreur lors de la lecture : " +
-	// exception.getMessage());
-	// }
-	// } catch (FileNotFoundException exception) {
-	// System.out.println("Le fichier n'a pas été trouvé");
-	// }
-	//
-	// return listeJeux;
-	// }
-
 	/**
 	 * Méthode chargée de créer un JeuFausseAnagramme depuis une ligne d'un
 	 * fichier. <br>
@@ -278,50 +232,6 @@ public abstract class CreationJeux {
 	}
 
 	/**
-	 * Cette méthode créée une liste de JeuTriEntiers depuis un fichier dont le
-	 * chemin est passé en paramètre. <br>
-	 * Chaque ligne du fichier correspond à une ligne de jeu.
-	 * 
-	 * @param cheminFichier
-	 *            Chemin du fichier.
-	 * @return Jeu créé à partir du fichier.
-	 */
-	// public static List<JeuTriEntiers> creerJeuTriEntiersDepuisFichier(String
-	// cheminFichier) {
-	//
-	// List<JeuTriEntiers> listeJeux = new ArrayList<JeuTriEntiers>();
-	//
-	// try {
-	// File f = new File(cheminFichier);
-	// FileReader fr = new FileReader(f);
-	// BufferedReader br = new BufferedReader(fr);
-	//
-	// try {
-	// String line = br.readLine();
-	//
-	// // On boucle sur chaque ligne du fichier.
-	// while (line != null) {
-	//
-	// JeuTriEntiers jte = creerJeuTriEntierDepuisLigne(line);
-	// listeJeux.add(jte);
-	//
-	// line = br.readLine();
-	// }
-	//
-	// br.close();
-	// fr.close();
-	// } catch (IOException exception) {
-	// System.out.println("Erreur lors de la lecture : " +
-	// exception.getMessage());
-	// }
-	// } catch (FileNotFoundException exception) {
-	// System.out.println("Le fichier n'a pas été trouvé");
-	// }
-	//
-	// return listeJeux;
-	// }
-
-	/**
 	 * Méthode chargée de créer un JeuTriEntiers depuis une ligne d'un fichier.
 	 * <br>
 	 * La ligne correspond à une liste de nombres séparés par des ';'.
@@ -332,7 +242,6 @@ public abstract class CreationJeux {
 	 */
 	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) throws CreationJeuxDepuisFichierException {
 
-		// JeuTriEntiers jte = new JeuTriEntiers();
 		System.out.println("La ligne contient : " + line);
 
 		String str[] = line.split(";");
@@ -377,46 +286,6 @@ public abstract class CreationJeux {
 		return jte;
 	}
 
-	// /**
-	// *
-	// * @param cheminFichier
-	// * @return
-	// */
-	// public static List<JeuFausseAnagramme>
-	// creerJeuFausseAnagrammeDepuisFichier(String cheminFichier) {
-	//
-	// List<JeuFausseAnagramme> listeJeux = new ArrayList<JeuFausseAnagramme>();
-	//
-	// try {
-	// File f = new File(cheminFichier);
-	// FileReader fr = new FileReader(f);
-	// BufferedReader br = new BufferedReader(fr);
-	//
-	// try {
-	// String line = br.readLine();
-	//
-	// // On boucle sur chaque ligne du fichier.
-	// while (line != null) {
-	//
-	// JeuFausseAnagramme jfa = creerFausseAnagrammeDepuisLigne(line);
-	// listeJeux.add(jfa);
-	//
-	// line = br.readLine();
-	// }
-	//
-	// br.close();
-	// fr.close();
-	// } catch (IOException exception) {
-	// System.out.println("Erreur lors de la lecture : " +
-	// exception.getMessage());
-	// }
-	// } catch (FileNotFoundException exception) {
-	// System.out.println("Le fichier n'a pas été trouvé");
-	// }
-	//
-	// return listeJeux;
-	// }
-
 	/**
 	 * Méthode chargée de créer un JeuFausseAnagramme depuis une ligne d'un
 	 * fichier. <br>
@@ -435,52 +304,6 @@ public abstract class CreationJeux {
 
 		return jfa;
 	}
-
-	// /**
-	// * Cette méthode créée un objet JeuTriEntiers depuis la console en
-	// * demandant à l'utilisateur les nombres qu'il veut utiliser.
-	// *
-	// * @return Le jeu créé par l'utilisateur.
-	// */
-	// public static JeuTriEntiers creerJeuTriEntiers() {
-	//
-	// Integer nb_entiers = 0;
-	// JeuTriEntiers jte = new JeuTriEntiers();
-	// Scanner sc = new Scanner(System.in);
-	//
-	// System.out.println("Veuillez entrer le nombre d'entiers que vous allez
-	// saisir : ");
-	// nb_entiers = sc.nextInt();
-	//
-	// for (int i = 0; i < nb_entiers; i++) {
-	// int a = i + 1;
-	// System.out.println("Veuillez saisir le nombre entier n° " + a + "/" +
-	// nb_entiers + " : ");
-	// jte.addEntierDansListe(sc.nextInt());
-	// }
-	//
-	// sc.close(); // Ne pas mettre cette ligne, sinon : NoSuchElementException
-	// return jte;
-	// }
-
-	// /**
-	// * Cette méthode est utilisée
-	// *
-	// * @return jfa : retourne une reférence à l'objet de type
-	// JeuFausseAnagramme
-	// */
-	// public static JeuFausseAnagramme creerJeuFausseAnagramme() {
-	//
-	// JeuFausseAnagramme jfa = new JeuFausseAnagramme();
-	// Scanner sc = new Scanner(System.in);
-	//
-	// System.out.println("Veuillez saisir le mot qui va être présenté au joueur
-	// pour l'anagramme :");
-	// jfa.setMotFausseAnagramme(sc.nextLine());
-	//
-	// sc.close(); // Ne pas mettre cette ligne, sinon : NoSuchElementException
-	// return jfa;
-	// }
 
 	/**
 	 * Cette méthode est utilisée

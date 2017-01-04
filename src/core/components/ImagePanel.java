@@ -7,19 +7,20 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
+ * @author
  * 
- * @author hackso39
- * 
- * Cette classe permet d'afficher des images pour le Jeu Question Image Reponse
- *
+ * 		Cette classe permet d'afficher des images pour le Jeu Question Image
+ *         Reponse
  */
 public class ImagePanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	private Image image;
 
 	public ImagePanel(String cheminImage) {
 		super();
-		this.image = getToolkit().getImage(cheminImage); 
+		this.image = getToolkit().getImage(cheminImage);
 	}
 
 	public void paintComponent(Graphics g) {
