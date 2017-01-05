@@ -10,7 +10,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import core.components.ImagePanel;
-import core.exception.CreationJeuxDepuisFichierException;
+import core.exception.JeuInvalideException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionResponse;
 import packXparty.jeux.JeuTriEntiers;
@@ -23,6 +23,24 @@ import packXparty.jeux.Jeux;
  */
 public class Launcher {
 
+	/**
+	 * SPEC :
+	 * - le programme ne doit jamais planter.
+	 * - le programme doit dire à l'utilisateur quelles erreurs sont présentent dans le 
+	 * fichier JSON :
+	 * 	les erreurs à tester :
+	 * 		- jeuQuestionReponse mais sans question : l'attribut question n'est pas présent dans le fichier JSON
+	 * 		- gérer les erreurs pour tous les attributs manquants du fichier JSON
+	 * 		- chemin erronné pour un jeu Question Image
+	 * 		- triEntiers : contient des lettres à la place des chiffres
+	 * 		- fichier JSON introuvable
+	 * Si une de ces erreurs arrivent, le programme indique à l'utilisateur le problème rencontré 
+	 * et s'arrête, le nombre de points n'apparaît pas. 
+	 * 
+	 */
+	
+	
+	
 	// ***
 	// création listes entiers -> le programme ne plante pas si le le fichier
 	// FAIT
@@ -58,9 +76,51 @@ public class Launcher {
 		// C:\Workspace\Xparty\images\Professortocat_v2.png
 
 		// exercice5();
-		exercice6();
+//		exercice6();
+		exercice7();
+		
 
 		System.exit(0);
+	}
+
+	/**
+	 * Cette méthode est utilisée
+	 * 
+	 * Question / Réponse, et Question / Réponse sur Image dans un ordre aléatoire
+	 * 
+	 * La création des jeux se fait à partir d'un fichier au format JSON depuis une URL
+	 */
+	private static void exercice7() {
+
+		List<Jeux> listJeux = new ArrayList<Jeux>();
+
+		try {
+
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
+
+			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des
+											// jeux.
+
+			int compteurPoints = 0;
+
+			/**
+			 * La liste des questions contient des questions sans images et avec
+			 * images. On parcours toute la liste des questions. Si une
+			 * questionImage se présente, il faut afficher une fenêtre pour
+			 * l'image.
+			 */
+			for (int i = 0; i < listJeux.size(); i++) {
+
+				Jeux monjeu = listJeux.get(i);
+				compteurPoints = monjeu.jouer(compteurPoints);
+			}
+
+			System.out.println("Nombre de points : " + compteurPoints);
+
+		} catch (JeuInvalideException e) {
+			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		}
+		
 	}
 
 	/**
@@ -97,7 +157,7 @@ public class Launcher {
 
 			System.out.println("Nombre de points : " + compteurPoints);
 
-		} catch (CreationJeuxDepuisFichierException e) {
+		} catch (JeuInvalideException e) {
 			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
 		}
 	}
@@ -136,7 +196,7 @@ public class Launcher {
 
 			System.out.println("Nombre de points : " + compteurPoints);
 
-		} catch (CreationJeuxDepuisFichierException e) {
+		} catch (JeuInvalideException e) {
 			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
 		}
 	}

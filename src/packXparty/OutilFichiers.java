@@ -80,21 +80,19 @@ public class OutilFichiers {
 
 		JSONParser parser = new JSONParser();
 
-		JSONObject jsonObject = new JSONObject();
-
 		try {
 
-			Object obj = parser.parse(new FileReader(cheminFichier));
-
-			jsonObject = (JSONObject) obj;
+			return (JSONObject)  parser.parse(new FileReader(cheminFichier));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return jsonObject;
+		
+		return new JSONObject();
+
 	}
 }

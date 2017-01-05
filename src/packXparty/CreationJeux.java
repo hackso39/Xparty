@@ -1,5 +1,12 @@
 package packXparty;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +14,7 @@ import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import core.exception.CreationJeuxDepuisFichierException;
+import core.exception.JeuInvalideException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
@@ -30,7 +37,7 @@ public abstract class CreationJeux {
 	 *            chemin du fichier
 	 * @return List de Jeux retourne une liste de jeux
 	 */
-	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) throws CreationJeuxDepuisFichierException {
+	public static List<Jeux> creerJeuxDepuisFichier(String cheminFichier) throws JeuInvalideException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 
@@ -67,7 +74,7 @@ public abstract class CreationJeux {
 
 				try {
 					creerJeuQuestionDepuisListe(liste);
-				} catch (CreationJeuxDepuisFichierException e) {
+				} catch (JeuInvalideException e) {
 					throw e;
 				}
 				jeuQuestionResponse = creerJeuQuestionDepuisListe(liste);
@@ -78,7 +85,7 @@ public abstract class CreationJeux {
 				JeuTriEntiers jeuTriEntier;
 				try {
 					jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
-				} catch (CreationJeuxDepuisFichierException e) {
+				} catch (JeuInvalideException e) {
 					throw e;
 				}
 				listeJeux.add(jeuTriEntier);
@@ -99,12 +106,127 @@ public abstract class CreationJeux {
 	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
 	 * au format JSON comportant différents types de jeux.
 	 * 
+	 * @param url
+	 *            url où se trouve le fichier JSON
+	 * @return List<Jeux> retourne une liste de jeux
+	 */
+	public static List<Jeux> creerJeuxDepuisFichierJSONparURL(String urlHttp)
+			throws JeuInvalideException {
+
+//		InputStream is = new URL(urlHttp).openStream();
+//	    try {
+//	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+//	      String jsonText = readAll(rd);
+//	      JSONObject jsonObject = new JSONObject(jsonText);
+//	      return json;
+//	    } finally {
+//	      is.close();
+//	    }
+		
+//		URL url = new URL(urlHttp);
+//		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+//		String strText;
+//		in.close();
+
+		List<Jeux> listeJeux = new ArrayList<Jeux>();
+
+		JSONObject jsonObject = OutilFichiers.lectureLigneJson(urlHttp);
+
+		JSONArray jsonArray = (JSONArray) jsonObject.get("jeux");
+
+		// On récupère les informations des jeux afin de les créer
+		if (jsonArray != null) {
+			for (int i = 0; i < jsonArray.size(); i++) {
+				System.out.println(jsonArray.get(i));
+				jsonObject = (JSONObject) jsonArray.get(i);
+
+				String type = (String) jsonObject.get("type");
+				System.out.println("Type de jeu : " + type);
+
+				if (type != null && type.equals(Launcher.JEU_TYPE_ANAGRAMME)) {
+
+					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+					String mot = (String) valeurs.get("mot");
+					System.out.println("Valeurs : " + mot);
+
+					JeuFausseAnagramme jfa = new JeuFausseAnagramme();
+					jfa.setMotFausseAnagramme(mot);
+					listeJeux.add(jfa);
+
+				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION)) {
+
+					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+					String question = (String) valeurs.get("question");
+					System.out.println("Question : " + question);
+					String reponse = (String) valeurs.get("réponse");
+					System.out.println("Réponse : " + reponse);
+
+					JeuQuestionResponse jqr = new JeuQuestionResponse();
+					jqr.setQuestion(question);
+					jqr.setReponse(reponse);
+					listeJeux.add(jqr);
+
+				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
+
+					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+					String question = (String) valeurs.get("question");
+					System.out.println("Question : " + question);
+					String cheminImage = (String) valeurs.get("cheminImage");
+					System.out.println("Question : " + cheminImage);
+					String reponse = (String) valeurs.get("réponse");
+					System.out.println("Réponse : " + reponse);
+
+					JeuQuestionImageReponse jqir = new JeuQuestionImageReponse();
+					jqir.setQuestion(question);
+					jqir.setCheminImage(cheminImage);
+					jqir.setReponse(reponse);
+					listeJeux.add(jqir);
+
+				} else if (type != null && type.equals(Launcher.JEU_TYPE_TRIENTIERS)) {
+
+					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+					JSONArray nombres = (JSONArray) valeurs.get("nombres");
+					System.out.print("Nombres : ");
+
+					JeuTriEntiers jte = new JeuTriEntiers();
+					for (int j = 0; j < nombres.size(); j++) {
+						Integer nbr = null;
+						System.out.print(nombres.get(j));
+						if (j < nombres.size() - 1) {
+							System.out.print(", ");
+						}
+
+						nbr = Integer.valueOf(nombres.get(j).toString());
+						jte.addEntierDansListe(nbr);
+					}
+					System.out.println("");
+
+					listeJeux.add(jte);
+				}
+			}
+		}
+		return listeJeux;
+	}
+
+	private static String readAll(Reader rd) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1) {
+			sb.append((char) cp);
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
+	 * au format JSON comportant différents types de jeux.
+	 * 
 	 * @param cheminFichier
 	 *            chemin du fichier au format JSON
 	 * @return List<Jeux> retourne une liste de jeux
 	 */
 	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier)
-			throws CreationJeuxDepuisFichierException {
+			throws JeuInvalideException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 
@@ -144,7 +266,7 @@ public abstract class CreationJeux {
 					jqr.setReponse(reponse);
 					listeJeux.add(jqr);
 
-				}  else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
+				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
 
 					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
 					String question = (String) valeurs.get("question");
@@ -192,7 +314,7 @@ public abstract class CreationJeux {
 	 * @return
 	 */
 	private static JeuQuestionResponse creerJeuQuestionDepuisListe(List<String> liste)
-			throws CreationJeuxDepuisFichierException {
+			throws JeuInvalideException {
 
 		JeuQuestionResponse jqr = new JeuQuestionResponse();
 
@@ -200,7 +322,7 @@ public abstract class CreationJeux {
 			jqr.setQuestion(liste.get(0));
 			jqr.setReponse(liste.get(1));
 		} catch (IndexOutOfBoundsException e) {
-			throw new CreationJeuxDepuisFichierException(e);
+			throw new JeuInvalideException(e);
 		}
 		return jqr;
 	}
@@ -253,7 +375,7 @@ public abstract class CreationJeux {
 	 *            Ligne à traiter.
 	 * @return Jeu créé à partir de la ligne.d
 	 */
-	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) throws CreationJeuxDepuisFichierException {
+	public static JeuTriEntiers creerJeuTriEntierDepuisLigne(String line) throws JeuInvalideException {
 
 		System.out.println("La ligne contient : " + line);
 
@@ -264,8 +386,8 @@ public abstract class CreationJeux {
 		JeuTriEntiers jeuTriEntier;
 		try {
 			jeuTriEntier = creerJeuTriEntierDepuisListe(liste);
-		} catch (CreationJeuxDepuisFichierException e) {
-			throw new CreationJeuxDepuisFichierException();
+		} catch (JeuInvalideException e) {
+			throw new JeuInvalideException();
 		}
 
 		return jeuTriEntier;
@@ -280,7 +402,7 @@ public abstract class CreationJeux {
 	 * @return JeuTriEntiers qui contient une liste de Integer
 	 */
 	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab)
-			throws CreationJeuxDepuisFichierException {
+			throws JeuInvalideException {
 
 		JeuTriEntiers jte = new JeuTriEntiers();
 
@@ -292,7 +414,7 @@ public abstract class CreationJeux {
 				nbr = Integer.valueOf(tab.get(i));
 				jte.addEntierDansListe(nbr);
 			} catch (NumberFormatException e) {
-				throw new CreationJeuxDepuisFichierException();
+				throw new JeuInvalideException();
 			}
 		}
 
