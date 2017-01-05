@@ -38,6 +38,14 @@
 			"valeurs" : { 
 							"nombres" : [45, 55, 1, 7, 5]
 						}
+		},
+		{
+			"type" : "questionImage",
+			"valeurs" : {
+							"question" : "Qui est ce personnage sur l'image ?",
+							"cheminImage" : "D:\\workspace\\Xparty\\images\\ironCat.jpg",
+							"réponse" : "ironCat"
+						}
 		}
 	]
 }

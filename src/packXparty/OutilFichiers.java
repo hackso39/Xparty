@@ -6,17 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import packXparty.jeux.JeuFausseAnagramme;
-import packXparty.jeux.JeuTriEntiers;
-import packXparty.jeux.Jeux;
 
 /**
  * @author
@@ -82,7 +76,7 @@ public class OutilFichiers {
 	 * @return JSONObject contient toutes les informations présentes dans le
 	 *         fichier JSON
 	 */
-	public static JSONObject lectureLigneJson(String cheminFichier) throws ParseException {
+	public static JSONObject lectureLigneJson(String cheminFichier) {
 
 		JSONParser parser = new JSONParser();
 
@@ -95,6 +89,8 @@ public class OutilFichiers {
 			jsonObject = (JSONObject) obj;
 
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();

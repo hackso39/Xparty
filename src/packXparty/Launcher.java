@@ -2,27 +2,16 @@ package packXparty;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import org.json.simple.parser.ParseException;
-
 import core.components.ImagePanel;
 import core.exception.CreationJeuxDepuisFichierException;
-import jdk.nashorn.api.scripting.JSObject;
-import jdk.nashorn.internal.runtime.JSONFunctions;
 import packXparty.jeux.JeuFausseAnagramme;
-import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
 import packXparty.jeux.JeuTriEntiers;
 import packXparty.jeux.Jeux;
@@ -51,6 +40,7 @@ public class Launcher {
 	// Constantes pour les différents types de jeux
 	public static final String JEU_TYPE_ANAGRAMME = "anagramme";
 	public static final String JEU_TYPE_QUESTION = "question";
+	public static final String JEU_TYPE_QUESTION_IMAGE = "questionImage";
 	public static final String JEU_TYPE_TRIENTIERS = "triEntiers";
 
 	/**
@@ -59,9 +49,8 @@ public class Launcher {
 	 * Question / Réponse sur Image (Exercice5)
 	 * 
 	 * @param args
-	 * @throws ParseException
 	 */
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 
 		// Images pour le jeu Question/Réponse sur Image
 		// C:\Workspace\Xparty\images\ironCat.jpg
@@ -77,17 +66,12 @@ public class Launcher {
 	/**
 	 * Cette méthode est utilisée
 	 * 
-	 * Question / Réponse, et Question / Réponse sur Image dans un ordre
-	 * aléatoire
+	 * Question / Réponse, et Question / Réponse sur Image dans un ordre aléatoire
 	 * 
 	 * La création des jeux se fait à partir d'un fichier au format JSON
-	 * 
-	 * @throws ParseException
 	 */
-	private static void exercice6() throws ParseException {
+	private static void exercice6() {
 
-		// Création de la liste de jeux contenant soit des questions/réponses,
-		// soit des questions/réponses sur image
 		List<Jeux> listJeux = new ArrayList<Jeux>();
 
 		try {
@@ -168,16 +152,20 @@ public class Launcher {
 
 		System.out.println("Voici la liste des nombres entiers à saisir par ordre croissant : ");
 		for (int i = 0; i < jte.getListEntiers().size(); i++) {
-			System.out.print(" " + jte.getListEntiers().get(i));
+			System.out.print(jte.getListEntiers().get(i));
+			
+			if(i < jte.getListEntiers().size() - 1) {
+				System.out.print(" ");
+			}
 		}
 		System.out.println("");
 
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 
-		for (int i = 0; i < jte.getListEntiers().size(); i++) {
+		for (int i = 0 ; i < jte.getListEntiers().size() ; i++) {
 			int a = i + 1;
-			System.out.println("Veuillez saisir le nombre n° " + a + " / " + jte.getListEntiers().size() + " : ");
+			System.out.println("Veuillez saisir le nombre n° " + a + " sur " + jte.getListEntiers().size() + " : ");
 			listTrie.add(sc.nextInt());
 		}
 

@@ -7,8 +7,6 @@ import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-
 import core.exception.CreationJeuxDepuisFichierException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
@@ -104,10 +102,9 @@ public abstract class CreationJeux {
 	 * @param cheminFichier
 	 *            chemin du fichier au format JSON
 	 * @return List<Jeux> retourne une liste de jeux
-	 * @throws ParseException
 	 */
 	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier)
-			throws CreationJeuxDepuisFichierException, ParseException {
+			throws CreationJeuxDepuisFichierException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 
@@ -146,6 +143,22 @@ public abstract class CreationJeux {
 					jqr.setQuestion(question);
 					jqr.setReponse(reponse);
 					listeJeux.add(jqr);
+
+				}  else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
+
+					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
+					String question = (String) valeurs.get("question");
+					System.out.println("Question : " + question);
+					String cheminImage = (String) valeurs.get("cheminImage");
+					System.out.println("Question : " + cheminImage);
+					String reponse = (String) valeurs.get("réponse");
+					System.out.println("Réponse : " + reponse);
+
+					JeuQuestionImageReponse jqir = new JeuQuestionImageReponse();
+					jqir.setQuestion(question);
+					jqir.setCheminImage(cheminImage);
+					jqir.setReponse(reponse);
+					listeJeux.add(jqir);
 
 				} else if (type != null && type.equals(Launcher.JEU_TYPE_TRIENTIERS)) {
 
@@ -356,9 +369,6 @@ public abstract class CreationJeux {
 
 		System.out.println("Veuillez saisir la réponse à la question :");
 		qr.setReponse(sc.nextLine());
-
-		// sc.close(); // Ne pas mettre cette ligne, sinon :
-		// NoSuchElementException
 
 		return qr;
 	}
