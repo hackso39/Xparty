@@ -96,7 +96,9 @@ public class Launcher {
 
 		try {
 
-			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
+			//listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://eddy-spade.monsite-orange.fr/file/e5f7c678373425867a5b0482d7d5bb80.txt"));
+			
 
 			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des
 											// jeux.

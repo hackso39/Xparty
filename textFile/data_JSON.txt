@@ -1,0 +1,51 @@
+{
+	"jeux" : [
+		{
+			"type" : "anagramme",
+			"valeurs" : {
+							"mot" : "manger"
+						}
+		},
+		{
+			"type" : "anagramme",
+			"valeurs" : {
+							"mot" : "mot"
+						}
+		},
+		{
+			"type" : "question",
+			"valeurs" : {
+							"question" : "Quelle est la couleur du slip de Frédéric ?",
+							"réponse": "Rose"
+						}
+		},
+		{
+			"type" : "question",
+			"valeurs" : { 
+							"question" : "Quelle est la couleur du cheval blanc d'Henri IV ?", 
+							"réponse": "Blanc"
+						}
+		},
+		{
+			"type" : "triEntiers",
+			"valeurs" : { 
+							"nombres" : [1, 2, 3, 24] 
+						}
+		},
+
+		{
+			"type" : "triEntiers",
+			"valeurs" : { 
+							"nombres" : [45, 55, 1, 7, 5]
+						}
+		},
+		{
+			"type" : "questionImage",
+			"valeurs" : {
+							"question" : "Qui est ce personnage sur l'image ?",
+							"cheminImage" : "D:\\workspace\\Xparty\\images\\ironCat.jpg",
+							"réponse" : "ironCat"
+						}
+		}
+	]
+}
