@@ -43,8 +43,8 @@
 			"type" : "questionImage",
 			"valeurs" : {
 							"question" : "Qui est ce personnage sur l'image ?",
-							"cheminImage" : "D:\\workspace\\Xparty\\images\\ironCat.jpg",
-							"réponse" : "ironCat"
+							"cheminImage" : "D:\\workspace\\Xparty\\images\\marioCat.jpg",
+							"réponse" : "marioCat"
 						}
 		}
 	]

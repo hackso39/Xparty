@@ -1,14 +1,5 @@
 package packXparty;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,9 +7,6 @@ import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import core.exception.JeuInvalideException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
@@ -98,14 +86,12 @@ public abstract class CreationJeux {
 			} else {
 
 				System.out.println("Jeu inconnu !");
-
 			}
-
 			i++;
 		}
 		return listeJeux;
 	}
-
+	
 	/**
 	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
 	 * au format JSON comportant différents types de jeux.
@@ -118,30 +104,8 @@ public abstract class CreationJeux {
 			throws JeuInvalideException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
-		JSONParser parser = new JSONParser();
-		JSONObject jsonObject = null;
 		
-		try {
-			URL url = new URL(urlHttp);   // URL à parser
-			URLConnection uc = url.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), "iso-8859-1"), 8);
-			
-			String inputLine;
-            while ((inputLine = in.readLine()) != null) {              
-                
-            	// System.out.println(inputLine);
-            	
-            	jsonObject = (JSONObject) parser.parse(inputLine);
-            }
-			
-		} catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+		JSONObject jsonObject = OutilFichiers.lectureFichierJSONdepuisURL(urlHttp);
 		JSONArray jsonArray = (JSONArray) jsonObject.get("jeux");
 
 		// On récupère les informations des jeux afin de les créer

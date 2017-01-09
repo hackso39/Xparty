@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,5 +98,45 @@ public class OutilFichiers {
 		
 		return new JSONObject();
 
+	}
+	
+	/**
+	 * 
+	 * @param rd
+	 * @return String
+	 * @throws IOException
+	 */
+	public static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+
+
+	public static JSONObject lectureFichierJSONdepuisURL(String urlHttp) {
+		
+		JSONParser parser = new JSONParser();
+		JSONObject jsonObject = null;
+		
+		try {
+			URL url = new URL(urlHttp);   // URL à parser
+			URLConnection uc = url.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), "iso-8859-1"), 8);
+			
+			String jsonText = OutilFichiers.readAll(in);
+			
+			jsonObject = (JSONObject) parser.parse(jsonText);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 }
