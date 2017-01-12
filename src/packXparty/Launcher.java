@@ -35,7 +35,7 @@ public class Launcher {
 	 * 		- triEntiers : contient des lettres à la place des chiffres
 	 * 		- fichier JSON introuvable
 	 * Si une de ces erreurs arrivent, le programme indique à l'utilisateur le problème rencontré 
-	 * et s'arrête, le nombre de points n'apparaît pas. 
+	 * et s'arrête et le nombre de points n'apparaît pas dans ce cas ! 
 	 * 
 	 */
 	
