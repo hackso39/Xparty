@@ -1,57 +1,79 @@
 package sandbox;
 
-/*
- * @author:         Carlo Fontanos
- * @author_url:     carlofontanos.com
- *
- * A simple code snippet for parsing JSON data from a URL
- */
-               
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class Poc3 {
-   
-    public static void main(String[] args) {
-        JSONParser parser = new JSONParser();
 
-        try {        
-            URL oracle = new URL("http://www.christophevirot.com/data_jeux.json"); // URL to Parse
-            URLConnection yc = oracle.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-           
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {              
-                JSONArray a = (JSONArray) parser.parse(inputLine);
-               
-                // Loop through each item
-                for (Object o : a) {
-                    JSONObject tutorials = (JSONObject) o;
+	static final String FIN = "q";
+	
+	public static void main(String[] args) {
 
-                    Long id = (Long) tutorials.get("ID");
-                    System.out.println("Post ID : " + id);
+		List<String> l1 = saisirListeJoueurs();
+		
+		try {
+			
+			String nomJoueur = trouverJoueurAuHasard(l1); // lève potentiellement une ListeVideException
+			
+			// Le code suivant ne s'exécute que si trouverJoueurAuHasard n'a pas levé d'exception.
+			System.out.println("Le nom du joueur gagnant est : " + nomJoueur);
+			
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.println("Veuillez saisir un premier nombre : ");
+			int nbr1 = sc.nextInt();
+			
+			System.out.println("Veuillez saisir un deuxième nombre : ");
+			int nbr2 = sc.nextInt();
+			
+			int result = nbr1 / nbr2; // lève potentielle une DivisionParZeroException
+			System.out.println("Le résultat de : " + nbr1 + " divisé par : "+ nbr2 + " est : " + result);
+			
+		}
+		catch (ListeVideException e) {
+			System.out.println("Programme arrêté, liste vide");
+		}
+		catch (ArithmeticException ae) {
+			System.out.println("Une erreur est survenue lors d'un calcul : " + ae.getMessage());
+		}
+		catch (Exception e) {
+			System.out.println("Une erreur est survenue lors de l'execution du programme.");
+		}
+		
 
-                    String title = (String) tutorials.get("post_title");
-                    System.out.println("Post Title : " + title);
+    }
 
-                    System.out.println("\n");
-                }
-            }
-            in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }  
-    }  
+	private static String trouverJoueurAuHasard(List<String> l1) throws ListeVideException {
+		
+		Collections.shuffle(l1);
+		
+		try {
+			return l1.get(0);
+		}
+		catch(ArrayIndexOutOfBoundsException ai) {
+			throw new ListeVideException();
+		}
+		
+	}
+
+	private static List<String> saisirListeJoueurs() {
+		
+		List<String> liste = new ArrayList<String>();
+
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+    	
+    	String motSaisi = null;
+		
+		while(!FIN.equals(motSaisi)) {
+			System.out.println("veuillez saisir une liste de joueurs : ");
+			motSaisi = sc.nextLine();
+			if(!FIN.equals(motSaisi)) {
+				liste.add(motSaisi);
+			}
+		}
+	return liste;
+	}
 }
