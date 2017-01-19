@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 
 import core.components.ImagePanel;
 import core.exception.JeuInvalideException;
+import core.exception.XpartyJeuxException;
+import core.exception.XpartyJeuxTriEntiersException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionResponse;
 import packXparty.jeux.JeuTriEntiers;
@@ -37,6 +39,10 @@ public class Launcher {
 	 * Si une de ces erreurs arrivent, le programme indique à l'utilisateur le problème rencontré 
 	 * et s'arrête et le nombre de points n'apparaît pas dans ce cas ! 
 	 * 
+	 */
+	
+	/**
+	 * mutualiser le code quand c'est possible (lecture fichier depuis hd ou nURL)
 	 */
 	
 	/**
@@ -89,7 +95,7 @@ public class Launcher {
 
 		try {
 
-			//listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
+//			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
 			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://eddy-spade.monsite-orange.fr/file/e5f7c678373425867a5b0482d7d5bb80.txt"));
 			
 
@@ -114,6 +120,10 @@ public class Launcher {
 
 		} catch (JeuInvalideException e) {
 			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		} catch (XpartyJeuxTriEntiersException e) {
+			System.out.println("Jeu Tri Entiers invalide : " + e.getChaineInvalide());
+		} catch (XpartyJeuxException e) {
+			System.out.println("Problème de construction du fichier de jeux !");
 		}
 		
 	}

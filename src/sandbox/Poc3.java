@@ -35,6 +35,7 @@ public class Poc3 {
 		}
 		catch (ListeVideException e) {
 			System.out.println("Programme arrêté, liste vide");
+			e.printStackTrace();
 		}
 		catch (ArithmeticException ae) {
 			System.out.println("Une erreur est survenue lors d'un calcul : " + ae.getMessage());
@@ -69,12 +70,17 @@ public class Poc3 {
 		
 		Collections.shuffle(l1);  // on brasse la liste pour la désordonner
 		
+//		if (!l1.isEmpty()) {
+//			return l1.get(0);
+//		}
+//		throw new ListeVideException();
+		
 		try {
 			return l1.get(0); // On retourne le premier élément de la liste 
 		}
 		// Peut lever une exception si la liste est vide et que l'on demande le premier élément
-		catch(ArrayIndexOutOfBoundsException ai) {
-			throw new ListeVideException();
+		catch(IndexOutOfBoundsException ai) {
+			throw new ListeVideException(ai);
 		}
 	}
 }

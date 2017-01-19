@@ -8,6 +8,8 @@ import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import core.exception.JeuInvalideException;
+import core.exception.XpartyJeuxException;
+import core.exception.XpartyJeuxTriEntiersException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
 import packXparty.jeux.JeuQuestionResponse;
@@ -101,7 +103,7 @@ public abstract class CreationJeux {
 	 * @return List<Jeux> retourne une liste de jeux
 	 */
 	public static List<Jeux> creerJeuxDepuisFichierJSONparURL(String urlHttp)
-			throws JeuInvalideException {
+			throws JeuInvalideException,  XpartyJeuxException {
 
 		List<Jeux> listeJeux = new ArrayList<Jeux>();
 		
@@ -162,16 +164,30 @@ public abstract class CreationJeux {
 					JSONArray nombres = (JSONArray) valeurs.get("nombres");
 					System.out.print("Nombres : ");
 
+					// Création du jeu tri entier
 					JeuTriEntiers jte = new JeuTriEntiers();
+					
+					// On itère sur chaque élément du JSONArray "nombres" pour initialiser le jeu.
 					for (int j = 0; j < nombres.size(); j++) {
+						
 						Integer nbr = null;
 						System.out.print(nombres.get(j));
 						if (j < nombres.size() - 1) {
 							System.out.print(", ");
 						}
-
-						nbr = Integer.valueOf(nombres.get(j).toString());
+						
+						try {
+							
+							nbr = Integer.valueOf(nombres.get(j).toString());
+						} catch (NumberFormatException nfe) {
+							XpartyJeuxTriEntiersException xpartyJeuxTriEntiersException = new XpartyJeuxTriEntiersException(nfe);
+							xpartyJeuxTriEntiersException.setChaineInvalide(nombres.toString());
+							throw xpartyJeuxTriEntiersException;
+						}
+						
+						// 0n ajout le nombre courant dans le jeu tri entier.
 						jte.addEntierDansListe(nbr);
+						
 					}
 					System.out.println("");
 
