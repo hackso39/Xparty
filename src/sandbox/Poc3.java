@@ -20,6 +20,7 @@ public class Poc3 {
 			// Le code suivant ne s'exécute que si trouverJoueurAuHasard n'a pas levé d'exception.
 			System.out.println("Le nom du joueur gagnant est : " + nomJoueur);
 			
+			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 			
 			System.out.println("Veuillez saisir un premier nombre : ");
@@ -28,7 +29,7 @@ public class Poc3 {
 			System.out.println("Veuillez saisir un deuxième nombre : ");
 			int nbr2 = sc.nextInt();
 			
-			int result = nbr1 / nbr2; // lève potentielle une DivisionParZeroException
+			int result = nbr1 / nbr2; // lève potentiellement une DivisionParZeroException
 			System.out.println("Le résultat de : " + nbr1 + " divisé par : "+ nbr2 + " est : " + result);
 			
 		}
@@ -45,27 +46,14 @@ public class Poc3 {
 
     }
 
-	private static String trouverJoueurAuHasard(List<String> l1) throws ListeVideException {
-		
-		Collections.shuffle(l1);
-		
-		try {
-			return l1.get(0);
-		}
-		catch(ArrayIndexOutOfBoundsException ai) {
-			throw new ListeVideException();
-		}
-		
-	}
-
 	private static List<String> saisirListeJoueurs() {
 		
 		List<String> liste = new ArrayList<String>();
-
+		
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
-    	
-    	String motSaisi = null;
+		
+		String motSaisi = null;
 		
 		while(!FIN.equals(motSaisi)) {
 			System.out.println("veuillez saisir une liste de joueurs : ");
@@ -74,6 +62,19 @@ public class Poc3 {
 				liste.add(motSaisi);
 			}
 		}
-	return liste;
+		return liste;
+	}
+
+	private static String trouverJoueurAuHasard(List<String> l1) throws ListeVideException {
+		
+		Collections.shuffle(l1);  // on brasse la liste pour la désordonner
+		
+		try {
+			return l1.get(0); // On retourne le premier élément de la liste 
+		}
+		// Peut lever une exception si la liste est vide et que l'on demande le premier élément
+		catch(ArrayIndexOutOfBoundsException ai) {
+			throw new ListeVideException();
+		}
 	}
 }

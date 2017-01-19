@@ -39,19 +39,12 @@ public class Launcher {
 	 * 
 	 */
 	
+	/**
+	 * Mettre en place le design pattern Factory afin de de ne plus avoir à modifier le code
+	 * lorsque l'on ajoute un nouveau jeu (voir méthode : CreationJeux.creerJeuxDepuisFichierJSONparURL
+	 * et les if imbriqués).
+	 */
 	
-	
-	// ***
-	// création listes entiers -> le programme ne plante pas si le le fichier
-	// FAIT
-	// contient une lettre
-	// création de question -> le programme ne plante pas si le fichier ne
-	// possède pas de ";" (pas de réponse à la question) FAIT
-	// => faire une gestion des exceptions sur tous les cas possibles
-	// d'erreurs dans la formation du fichier
-	// Transformer le fichier : data_jeux.txt en fichier au format : JSon FAIT
-	// ***
-
 	// Nombre de questions à poser par type de jeux
 	public static final int NB_REPETITIONS = 1;
 
