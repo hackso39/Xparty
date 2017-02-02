@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import core.exception.JeuInvalideException;
 import core.exception.XpartyJeuxException;
+import core.exception.XpartyJeuxQuestionException;
 import core.exception.XpartyJeuxTriEntiersException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionImageReponse;
@@ -160,7 +161,13 @@ public abstract class CreationJeux {
 
 					JeuQuestionResponse jqr = new JeuQuestionResponse();
 					jqr.setQuestion(question);
+					if(jqr.getQuestion().isEmpty()) {
+						throw new XpartyJeuxQuestionException("Il manque une question dans le fichier JSON du jeu : Question !");
+					}
 					jqr.setReponse(reponse);
+					if(jqr.getReponse().isEmpty()) {
+						throw new XpartyJeuxQuestionException("Il manque une réponse dans le fichier JSON du jeu : Question !");
+					}
 					listeJeux.add(jqr);
 
 				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
@@ -255,15 +262,16 @@ public abstract class CreationJeux {
 	}
 
 	/**
-	 * Méthode chargée de créer un JeuFausseAnagramme depuis une ligne d'un
+	 * Méthode chargée de créer un JeuQuestionReponse depuis une ligne d'un
 	 * fichier. <br>
 	 * Il y a un mot par ligne.
 	 * 
 	 * @param line
 	 *            Ligne à traiter.
 	 * @return Jeu créé à partir de la ligne.
+	 * @throws XpartyJeuxException 
 	 */
-	public static JeuQuestionResponse creerJeuQuestionResponseDepuisLigne(String line) {
+	public static JeuQuestionResponse creerJeuQuestionResponseDepuisLigne(String line) throws XpartyJeuxException {
 
 		// JeuFausseAnagramme jfa = new JeuFausseAnagramme();
 		JeuQuestionResponse jqr = new JeuQuestionResponse();
@@ -272,8 +280,13 @@ public abstract class CreationJeux {
 		String str[] = line.split(";");
 
 		jqr.setQuestion(str[0]);
+		if(jqr.getQuestion().isEmpty()) {
+			throw new XpartyJeuxQuestionException();
+		}
 		jqr.setReponse(str[1]);
-
+		if(jqr.getReponse().isEmpty()) {
+			throw new XpartyJeuxQuestionException();
+		}
 		return jqr;
 	}
 

@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import core.components.ImagePanel;
 import core.exception.JeuInvalideException;
 import core.exception.XpartyJeuxException;
+import core.exception.XpartyJeuxQuestionException;
 import core.exception.XpartyJeuxTriEntiersException;
 import packXparty.jeux.JeuFausseAnagramme;
 import packXparty.jeux.JeuQuestionResponse;
@@ -76,8 +77,8 @@ public class Launcher {
 		// C:\Workspace\Xparty\images\Professortocat_v2.png
 
 		// exercice5();
-//		exercice6();
-		exercice7();
+		exercice6();
+//		exercice7();
 		
 
 		System.exit(0);
@@ -142,7 +143,7 @@ public class Launcher {
 
 		try {
 
-			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSON("D:\\Workspace\\Xparty\\textFile\\data_jeux.json"));
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSON("C:\\Workspace\\Xparty\\textFile\\data_jeux.json"));
 
 			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des
 											// jeux.
@@ -165,6 +166,8 @@ public class Launcher {
 
 		} catch (JeuInvalideException e) {
 			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		} catch (XpartyJeuxQuestionException e) { 
+			System.out.println("Jeu Question invalide : " + e.getMessage());
 		} catch (XpartyJeuxTriEntiersException e) {
 			System.out.println("Jeu Tri Entiers invalide : " + e.getChaineInvalide());
 		} catch (XpartyJeuxException e) {
