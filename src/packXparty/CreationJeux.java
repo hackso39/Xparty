@@ -102,14 +102,35 @@ public abstract class CreationJeux {
 	 *            url où se trouve le fichier JSON
 	 * @return List<Jeux> retourne une liste de jeux
 	 */
-	public static List<Jeux> creerJeuxDepuisFichierJSONparURL(String urlHttp)
-			throws JeuInvalideException,  XpartyJeuxException {
+	public static List<Jeux> creerJeuxDepuisFichierJSONparURL(String urlHttp) throws JeuInvalideException,  XpartyJeuxException {
 
-		List<Jeux> listeJeux = new ArrayList<Jeux>();
-		
 		JSONObject jsonObject = OutilFichiers.lectureFichierJSONdepuisURL(urlHttp);
 		JSONArray jsonArray = (JSONArray) jsonObject.get("jeux");
 
+		return traitementCreerJeux(jsonObject, jsonArray);
+	}
+
+	/**
+	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
+	 * au format JSON comportant différents types de jeux.
+	 * 
+	 * @param cheminFichier
+	 *            chemin du fichier au format JSON
+	 * @return List<Jeux> retourne une liste de jeux
+	 * @throws XpartyJeuxTriEntiersException 
+	 */
+	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier) throws JeuInvalideException, XpartyJeuxException {
+
+		JSONObject jsonObject = OutilFichiers.lectureLigneJson(cheminFichier);
+		JSONArray jsonArray = (JSONArray) jsonObject.get("jeux");
+
+		return traitementCreerJeux(jsonObject, jsonArray);
+	}
+
+	private static List<Jeux> traitementCreerJeux(JSONObject jsonObject, JSONArray jsonArray) throws JeuInvalideException, XpartyJeuxException {
+		
+		List<Jeux> listeJeux = new ArrayList<Jeux>();
+		
 		// On récupère les informations des jeux afin de les créer
 		if (jsonArray != null) {
 			for (int i = 0; i < jsonArray.size(); i++) {
@@ -199,97 +220,6 @@ public abstract class CreationJeux {
 	}
 
 	/**
-	 * Cette méthode permet de créé une liste de jeux après avoir lu un fichier
-	 * au format JSON comportant différents types de jeux.
-	 * 
-	 * @param cheminFichier
-	 *            chemin du fichier au format JSON
-	 * @return List<Jeux> retourne une liste de jeux
-	 */
-	public static List<Jeux> creerJeuxDepuisFichierJSON(String cheminFichier)
-			throws JeuInvalideException {
-
-		List<Jeux> listeJeux = new ArrayList<Jeux>();
-
-		JSONObject jsonObject = OutilFichiers.lectureLigneJson(cheminFichier);
-
-		JSONArray jsonArray = (JSONArray) jsonObject.get("jeux");
-
-		// On récupère les informations des jeux afin de les créer
-		if (jsonArray != null) {
-			for (int i = 0; i < jsonArray.size(); i++) {
-				System.out.println(jsonArray.get(i));
-				jsonObject = (JSONObject) jsonArray.get(i);
-
-				String type = (String) jsonObject.get("type");
-				System.out.println("Type de jeu : " + type);
-
-				if (type != null && type.equals(Launcher.JEU_TYPE_ANAGRAMME)) {
-
-					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
-					String mot = (String) valeurs.get("mot");
-					System.out.println("Valeurs : " + mot);
-
-					JeuFausseAnagramme jfa = new JeuFausseAnagramme();
-					jfa.setMotFausseAnagramme(mot);
-					listeJeux.add(jfa);
-
-				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION)) {
-
-					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
-					String question = (String) valeurs.get("question");
-					System.out.println("Question : " + question);
-					String reponse = (String) valeurs.get("réponse");
-					System.out.println("Réponse : " + reponse);
-
-					JeuQuestionResponse jqr = new JeuQuestionResponse();
-					jqr.setQuestion(question);
-					jqr.setReponse(reponse);
-					listeJeux.add(jqr);
-
-				} else if (type != null && type.equals(Launcher.JEU_TYPE_QUESTION_IMAGE)) {
-
-					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
-					String question = (String) valeurs.get("question");
-					System.out.println("Question : " + question);
-					String cheminImage = (String) valeurs.get("cheminImage");
-					System.out.println("Question : " + cheminImage);
-					String reponse = (String) valeurs.get("réponse");
-					System.out.println("Réponse : " + reponse);
-
-					JeuQuestionImageReponse jqir = new JeuQuestionImageReponse();
-					jqir.setQuestion(question);
-					jqir.setCheminImage(cheminImage);
-					jqir.setReponse(reponse);
-					listeJeux.add(jqir);
-
-				} else if (type != null && type.equals(Launcher.JEU_TYPE_TRIENTIERS)) {
-
-					JSONObject valeurs = (JSONObject) jsonObject.get("valeurs");
-					JSONArray nombres = (JSONArray) valeurs.get("nombres");
-					System.out.print("Nombres : ");
-
-					JeuTriEntiers jte = new JeuTriEntiers();
-					for (int j = 0; j < nombres.size(); j++) {
-						Integer nbr = null;
-						System.out.print(nombres.get(j));
-						if (j < nombres.size() - 1) {
-							System.out.print(", ");
-						}
-
-						nbr = Integer.valueOf(nombres.get(j).toString());
-						jte.addEntierDansListe(nbr);
-					}
-					System.out.println("");
-
-					listeJeux.add(jte);
-				}
-			}
-		}
-		return listeJeux;
-	}
-
-	/**
 	 * 
 	 * @param liste
 	 * @return
@@ -348,8 +278,7 @@ public abstract class CreationJeux {
 	}
 
 	/**
-	 * Méthode chargée de créer un JeuTriEntiers depuis une ligne d'un fichier.
-	 * <br>
+	 * Méthode chargée de créer un JeuTriEntiers depuis une ligne d'un fichier. <br>
 	 * La ligne correspond à une liste de nombres séparés par des ';'.
 	 * 
 	 * @param line
@@ -382,8 +311,7 @@ public abstract class CreationJeux {
 	 *            de String contient les valeurs à convertir en entier (Integer)
 	 * @return JeuTriEntiers qui contient une liste de Integer
 	 */
-	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab)
-			throws JeuInvalideException {
+	public static JeuTriEntiers creerJeuTriEntierDepuisListe(List<String> tab) throws JeuInvalideException {
 
 		JeuTriEntiers jte = new JeuTriEntiers();
 

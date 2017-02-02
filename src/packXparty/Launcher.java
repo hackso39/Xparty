@@ -32,11 +32,12 @@ public class Launcher {
 	 * fichier JSON :
 	 * 	les erreurs à tester :
 	 * 		- jeuQuestionReponse mais sans question : l'attribut question n'est pas présent dans le fichier JSON
+	 * 		- jeuQuestionReponse mais sans question : l'attribut réponse n'est pas présent dans le fichier JSON
 	 * 		- gérer les erreurs pour tous les attributs manquants du fichier JSON
-	 * 		- chemin erronné pour un jeu Question Image
-	 * 		- triEntiers : contient des lettres à la place des chiffres
+	 * 		- chemin erronné pour un jeu Question Image ==> "image non trouvée"
+	 * 		- triEntiers : contient des lettres à la place des chiffres ==> "un caractère différent d'un nombre est présent dans le jeu Tri Entiers"
 	 * 		- fichier JSON introuvable
-	 * Si une de ces erreurs arrivent, le programme indique à l'utilisateur le problème rencontré 
+	 * Si une de ces erreurs arrive, le programme indique à l'utilisateur le problème rencontré 
 	 * et s'arrête et le nombre de points n'apparaît pas dans ce cas ! 
 	 * 
 	 */
@@ -96,8 +97,8 @@ public class Launcher {
 		try {
 
 //			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://www.christophevirot.com/data_jeux.json"));
-			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://eddy-spade.monsite-orange.fr/file/e5f7c678373425867a5b0482d7d5bb80.txt"));
-			
+//			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://eddy-spade.monsite-orange.fr/file/e5f7c678373425867a5b0482d7d5bb80.txt"));
+			listJeux.addAll(CreationJeux.creerJeuxDepuisFichierJSONparURL("http://tests-json.pagesperso-orange.fr/data_jeux.json"));
 
 			Collections.shuffle(listJeux); // Mélange aléatoire de la liste des
 											// jeux.
@@ -164,6 +165,10 @@ public class Launcher {
 
 		} catch (JeuInvalideException e) {
 			System.out.println("Le jeu ne s'est pas lancer car une erreur est présente dans le fichier.");
+		} catch (XpartyJeuxTriEntiersException e) {
+			System.out.println("Jeu Tri Entiers invalide : " + e.getChaineInvalide());
+		} catch (XpartyJeuxException e) {
+			System.out.println("Problème de construction du fichier de jeux !");
 		}
 	}
 
